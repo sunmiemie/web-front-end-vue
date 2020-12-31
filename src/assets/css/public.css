@@ -1,0 +1,179 @@
+a {
+  color: white;
+  text-decoration: none;
+}
+
+a:link {
+  color: white;
+  text-decoration: none;
+}
+
+a:visited {
+  color: white;
+  text-decoration: none;
+}
+
+a:hover {
+  color: white;
+  text-decoration: none;
+}
+
+a:active {
+  color: white;
+  text-decoration: none;
+}
+
+a:focus {
+  color: white;
+  text-decoration: none;
+}
+
+.font-number {
+  font-family: "Number";
+  letter-spacing: 4px;
+  font-size: 20px;
+  color: aqua;
+}
+
+.font-number-min {
+    font-family: "Number";
+}
+
+.border-aqua {
+  box-shadow: 0 0 6px inset aqua;
+}
+
+.border-warn {
+  /* animation: warn 1s linear infinite; */
+  box-shadow: 0 0 8px inset rgb(255, 166, 0);
+}
+
+@keyframes warn {
+  from {
+    box-shadow: 0 0 8px inset rgb(255, 166, 0);
+  }
+
+  to {
+    box-shadow: 0 0 8px inset rgb(255, 0, 0);
+  }
+}
+
+.margin-top-10 {
+  margin-top: 10px;
+}
+
+.margin-top-30 {
+    margin-top: 30px;
+  }
+.text-shadow {
+  text-shadow: 0 0 4px aqua;
+}
+
+.text-g-number {
+  font-family: 'Number';
+  font-size: 20px;
+  color: gold;
+}
+
+.bottom-height {
+  height: 240px;
+}
+
+.top-height {
+  height: 750px;
+}
+
+.clear-margin-padding {
+  margin: 0;
+  padding: 0;
+}
+
+.custom-scrollable {
+  max-height: 690px;
+  overflow-y: scroll;
+}
+
+.car-list-scrollable {
+  max-height: 150px;
+  overflow-y: scroll;
+}
+
+.car-list-h-scrollable {
+  max-height: 200px;
+  overflow-y: scroll;
+}
+
+.can-list-h-scrollable {
+    max-height: 350px;
+    overflow-y: scroll;
+  }
+
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+/* 滚动槽 */
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset006pxrgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+}
+
+/* 滚动条滑块 */
+::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.9);
+  -webkit-box-shadow: inset006pxrgba(0, 0, 0, 0.5);
+}
+
+::-webkit-scrollbar-thumb:window-inactive {
+  background: rgba(62, 142, 163, 0.4);
+}
+
+.text-green {
+  color: #0bff91;
+}
+
+.text-glod {
+  color: #f5a623;
+}
+
+.unline {
+  border-bottom: 1px dotted white;
+}
+.mechine-txt,.mechine-txt p {
+    font-size: 18px;
+}
+.text-g {
+	color: #f5a623;
+	font-weight: bold;
+	font-family: 'Number';
+	letter-spacing: 10px;
+}
+
+.text-green-min {
+	color: springgreen;
+	font-weight: bold;
+	font-family: 'Number';
+}
+.add-h-six-list p {
+	border-bottom: dotted 1px white;
+	font-size: 14px;
+	margin-left: 15px;
+	color: black;
+	
+}
+.add-h-six-back {
+	background: rgba(250, 170, 21, 0.8);
+	border-radius: 5px;
+}
+.custom-scrollable-six {
+	max-height: 100px;
+	overflow-y: scroll;
+}
+.custom-scrollable-fc-info-list {
+	max-height: 606px;
+	overflow-y: scroll;
+}
+img:hover {
+    cursor: pointer;
+}
