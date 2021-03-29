@@ -60,7 +60,7 @@
                             <router-link
                                 :to="{
                                     path: pathMachine,
-                                    query: { name: stationName },
+                                    query: { name: stationName ,id: stationId},
                                 }"
                             >
                                 <p class="text-g col-12">更多加氢机信息</p>
@@ -125,7 +125,7 @@
                             <router-link
                                 :to="{
                                     path: pathCompressor,
-                                    query: { name: stationName },
+                                    query: { name: stationName,id: stationId },
                                 }"
                             >
                                 <p class="text-g col-12">更多储氢罐和压缩机信息</p>
@@ -174,6 +174,9 @@
 <script>
 import StationTop from "./table/StationTop";
 import StationBottom from "./table/StationBottom";
+import {
+    getUrlKey,
+} from "../../api/util"
 export default {
     props: ["BottomData"],
     components: { StationTop, StationBottom },
@@ -181,7 +184,8 @@ export default {
         return {
             pathMachine: "/hydrogenation/station-simple/h-machine",
             pathCompressor: "/hydrogenation/station-simple/h-can-compressor",
-            stationName: null,
+            stationName: getUrlKey("name"),
+            stationId: getUrlKey("id"),
         };
     },
 };

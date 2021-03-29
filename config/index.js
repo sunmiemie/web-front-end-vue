@@ -13,7 +13,8 @@ module.exports = {
         proxyTable: {
             "/api": {
                 // target: "http://asus.work:8888",
-                target: "http://152.136.255.67:8888",
+                // target: "http://152.136.255.67:8888",
+                target: "http://nevt05:30202",
                 changeOrigin: true,
                 pathRewrite: {
                     "^/api": "/api"
@@ -27,7 +28,8 @@ module.exports = {
                 }
             },
             "/dummy": {
-                target: "http://152.136.255.67:8989",
+                // target: "http://152.136.255.67:8989",
+                target: "http://nevt05:30204",
                 changeOrigin: true,
                 pathRewrite: {
                     "^/dummy": "/dummy"

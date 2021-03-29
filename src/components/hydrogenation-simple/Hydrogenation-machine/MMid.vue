@@ -5,29 +5,67 @@
                 class="col-12 h4 text-center"
                 style="line-height: 60px; height: 60px"
             >
-                <span class="text-green h4" v-text="stationName"></span>-加氢机-<span class="text-green h4">HBIS-JQJ-01</span>
+                <span class="text-green h4" v-text="stationName"></span
+                >-加氢机-<span class="text-green h4">{{
+                    paramValue.SPSID == null ? "HBIS-JQJ-01" : paramValue.SPSID
+                }}</span>
             </p>
         </div>
         <div class="row text-white">
             <div
                 class="col-3"
                 v-show="sixHShow"
+                v-if="paramValue.SPSGunStatus == 1"
                 style="
                     position: absolute;
-                    top: 120px;
-                    left: 50px;
+                    top: 100px;
+                    left: 30px;
                     z-index: 1000;
                 "
             >
-                <div class="col-12 border-aqua" style="height: 120px">
-                    <p>压力: <span class="text-green">36</span> Mpa</p>
-                    <p>流量: <span class="text-green">XX</span> slpm</p>
-                    <p>温度: <span class="text-green">XX</span> ℃</p>
+                <div class="col-12 border-aqua" style="height: 150px">
+                    <p>
+                        加氢枪实时流量:
+                        <span class="text-green">{{
+                            paramValue.SPSOutputTraffic == null
+                                ? 0
+                                : paramValue.SPSOutputTraffic
+                        }}</span>
+                        kg/min
+                    </p>
+                    <p>
+                        枪口实时加氢质量:
+                        <span class="text-green">{{
+                            paramValue.SPSOutputWeight == null
+                                ? 0
+                                : paramValue.SPSOutputWeight
+                        }}</span>
+                        kg
+                    </p>
+                    <p>
+                        枪口压力:
+                        <span class="text-green">{{
+                            paramValue.SPSOutputPressure == null
+                                ? 0
+                                : paramValue.SPSOutputPressure
+                        }}</span>
+                        map
+                    </p>
+                    <p>
+                        环境温度:
+                        <span class="text-green">{{
+                            paramValue.SPSTemperature == null
+                                ? 0
+                                : paramValue.SPSTemperature
+                        }}</span>
+                        ℃
+                    </p>
                 </div>
             </div>
             <div
                 class="col-4"
                 v-show="sixCarShow"
+                v-if="paramValue.SPSGunStatus == 1"
                 style="
                     position: absolute;
                     top: 240px;
@@ -41,13 +79,21 @@
                 >
                     <p>
                         车载氢系统压力:
-                        <span class="text-green">36</span> Mpa
+                        <span class="text-green">35</span> Mpa
                     </p>
                     <p>车载氢系统温度: <span class="text-green">XX</span> ℃</p>
                 </div>
             </div>
         </div>
-        <div class="row" style="height: 385px;">
+        <div class="row" style="height: 385px">
+            <div
+                class="transmission-up"
+                v-if="paramValue.SPSGunStatus == 1"
+            ></div>
+            <div
+                class="transmission-down"
+                v-if="paramValue.SPSGunStatus == 1"
+            ></div>
             <div
                 class="col-6"
                 style="position: relative; left: 100px; top: 100px"
@@ -127,7 +173,7 @@
             ></div>
             <div
                 class="col-6"
-                style="position: relative; top: 250px; left: 100px"
+                style="position: relative; top: 230px; left: 100px"
             >
                 <svg
                     t="1607062361497"
@@ -177,14 +223,17 @@
                 </svg>
             </div>
         </div>
-        <div class="row  text-white border-aqua" style="margin-top: 90px;height: 350px;">
-            <div class="margin-top-10 col-12" style="line-height: 40px;">
+        <div
+            class="row text-white border-aqua"
+            style="margin-top: 90px; height: 350px"
+        >
+            <div class="margin-top-10 col-12" style="line-height: 40px">
                 <div class="row unline">
                     <div class="col-6">
                         <p class="">环境温度</p>
                     </div>
                     <div class="col-6">
-                        <p class=" text-green">暂无</p>
+                        <p class="text-green">暂无</p>
                     </div>
                 </div>
                 <div class="row unline">
@@ -192,7 +241,7 @@
                         <p class="">环境湿度</p>
                     </div>
                     <div class="col-6">
-                        <p class=" text-green">暂无</p>
+                        <p class="text-green">暂无</p>
                     </div>
                 </div>
                 <div class="row unline">
@@ -200,7 +249,7 @@
                         <p class="">环境压力</p>
                     </div>
                     <div class="col-6">
-                        <p class=" text-green">暂无</p>
+                        <p class="text-green">暂无</p>
                     </div>
                 </div>
                 <div class="row unline">
@@ -208,7 +257,7 @@
                         <p class="">加氢时长</p>
                     </div>
                     <div class="col-6">
-                        <p class=" text-green">暂无</p>
+                        <p class="text-green">暂无</p>
                     </div>
                 </div>
                 <div class="row unline">
@@ -216,7 +265,7 @@
                         <p class="">加注起始压力</p>
                     </div>
                     <div class="col-6">
-                        <p class=" text-green">暂无</p>
+                        <p class="text-green">暂无</p>
                     </div>
                 </div>
                 <div class="row">
@@ -224,7 +273,7 @@
                         <p class="">加注结束压力</p>
                     </div>
                     <div class="col-6">
-                        <p class=" text-green">暂无</p>
+                        <p class="text-green">暂无</p>
                     </div>
                 </div>
             </div>
@@ -233,14 +282,38 @@
 </template>
 
 <script>
+import {
+    baseUrl,
+    testUrl,
+    getUrlKey,
+    data_station_type,
+    jsonFormat,
+} from "../../../api/util";
 export default {
+    created() {
+        this.ws = this.websocket.ws(testUrl);
+    },
     data() {
         return {
+            ws: null,
             sixHShow: false,
             sixCarShow: false,
+            paramValue: {},
+            paramList: [
+                "SPSID",
+                "SSTemperature",
+                "SPSGunStatus",
+                "SPSOutputWeight",
+                "SPSOutputTraffic",
+                "SPSOutputPressure",
+            ],
         };
     },
     props: ["stationName"],
+    mounted() {
+        this.sendParam();
+        this.receive();
+    },
     methods: {
         addSixHPhoto: function () {
             this.sixHShow = !this.sixHShow;
@@ -248,10 +321,72 @@ export default {
         addSixHCar: function () {
             this.sixCarShow = !this.sixCarShow;
         },
+        sendParam() {
+            var that = this;
+            that.ws.onopen = function () {
+                var parameter = {
+                    type: data_station_type.station,
+                    station: getUrlKey("id"),
+                    paramName: that.paramList,
+                };
+                that.ws.send(JSON.stringify(parameter));
+            };
+        },
+        receive() {
+            var that = this;
+            that.ws.onmessage = function (data) {
+                let value = jsonFormat(data);
+                that.paramValue = value.data.content;
+            };
+        },
+    },
+    destroyed() {
+        this.ws.close();
     },
 };
 </script>
-</script>
 
 <style scoped>
+.transmission-up {
+    width: 50px;
+    height: 2px;
+    background: aqua;
+    position: absolute;
+    top: 42%;
+    left: 35%;
+    animation: up infinite 0.5s alternate;
+}
+.transmission-down {
+    width: 50px;
+    height: 2px;
+    background: aqua;
+    position: absolute;
+    top: 45%;
+    left: 55%;
+    animation: down infinite 0.5s alternate;
+}
+@keyframes up {
+    to {
+        left: 35%;
+        width: 5px;
+        background: white;
+    }
+    from {
+        left: 55%;
+        width: 50px;
+        background: aqua;
+    }
+}
+@keyframes down {
+    to {
+        left: 55%;
+        width: 50px;
+        background: aqua;
+    }
+    from {
+        left: 35%;
+        width: 5px;
+        background: white;
+    }
+}
 </style>

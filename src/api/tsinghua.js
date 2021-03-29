@@ -1,7 +1,7 @@
 import websocket from "../api/websocket"
-import { creat_ws_api, data_station_type } from "../api/util"
+import { creat_ws_api, data_station_type, baseUrl } from "../api/util"
 
-var url_prefix = "ws://152.136.255.67:8989/ws"
+var url_prefix = baseUrl;
 
 var allVehicle = function () {
     var url = url_prefix + creat_ws_api(data_station_type.vehicle);

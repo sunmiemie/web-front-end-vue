@@ -9,7 +9,10 @@ const station = "&station=";
 const device = "&device=";
 const paramName = "&paramName=";
 const param = "&param=";
-var baseUrl = "ws://152.136.255.67:8989/ws"
+var baseUrl = "ws://nevt05:30204/ws";
+var alarmUrl = "ws://127.0.0.1:8989/ws?alarm=true"
+var testUrl = "ws://127.0.0.1:8989/ws";
+// var baseUrl = "ws://127.0.0.1:8989/ws"
 var creat_ws_api = function () {
 
     switch (arguments.length) {
@@ -25,7 +28,7 @@ var creat_ws_api = function () {
             return type + 404;
     }
 }
-
+//type=10003&station=2000007&paramName=fcProbeTemp
 var creat_ws_param_api = function () {
     return baseUrl + type + arguments[0] + station + arguments[1] + paramName + arguments[2];
 }
@@ -51,11 +54,27 @@ var getUrlKey = function (param) {
     return result;
 }
 
+
+var parameterVelue = function (ws, value) {
+    var parameter = {
+        type: value[0],
+        station: value[1],
+        paramName: value[2]
+    };
+    var jsonStr = JSON.stringify(parameter);
+    ws.send(jsonStr);
+}
+
+
 export {
     data_station_type,
     creat_ws_api,
     jsonFormat,
     creat_ws_param_api,
     allValues,
-    getUrlKey
+    getUrlKey,
+    baseUrl,
+    testUrl,
+    alarmUrl,
+    parameterVelue
 }
