@@ -14,7 +14,7 @@
 import IndexBottom from "../components/index/IndexBottom.vue";
 import IndexLeft from "../components/index/IndexLeft.vue";
 import IndexRight from "../components/index/IndexRight.vue";
-import TopNav from "../components/public/TopNav.vue";
+import TopNav from "../components/public/TopNav";
 
 export default {
     components: { TopNav, IndexLeft, IndexRight, IndexBottom },

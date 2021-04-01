@@ -27,9 +27,12 @@ export const allCarrierAddr = () => {
 }
 
 export const vinByDataStationId = (data) => {
-    return creatAxiosData("/vin",data);
+    return creatAxiosData("/vin", data);
 }
 
+export const alarmHandler = (data) => {
+    return creatAxiosData("/removeAlarm", data);
+}
 
 const creatAxios = (url) => {
     return axios({
@@ -46,7 +49,7 @@ const creatAxios = (url) => {
     });
 }
 
-const creatAxiosData = function(url,data) {
+const creatAxiosData = function (url, data) {
     return axios({
         method: "get",
         url: url_pre + url,

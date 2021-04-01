@@ -1,6 +1,35 @@
 <template>
     <div class="row text-center top-nav">
-        <div class="alarm-box">
+        <div class="alarm-box" v-if="alarmShow">
+            <div class="row confirm-box" v-show="adminConfirm">
+                <form class="col-12">
+                    <div class="form-group">
+                        <label for="username">请输入管理员账号密码</label>
+                        <input
+                            type="text"
+                            class="form-control"
+                            id="username"
+                            placeholder="Admin"
+                        />
+                    </div>
+                    <div class="form-group">
+                        <input
+                            type="password"
+                            class="form-control"
+                            id="password"
+                            placeholder="Password"
+                        />
+                    </div>
+                    <button
+                        id="loginSub"
+                        type="button"
+                        @click="login()"
+                        class="btn btn-dark"
+                    >
+                        确认
+                    </button>
+                </form>
+            </div>
             <div class="row">
                 <div class="alarm col-12">
                     <svg
@@ -22,39 +51,71 @@
                     </svg>
                 </div>
             </div>
-            <div style="background: rgba(0, 0, 0, 0.8)">
-                <div class="row">
-                    <p class="col-4">故障等级:</p>
-                    <p class="col-8 text-danger">
-                        {{ alarmData.content.level }}
-                    </p>
-                </div>
-                <div class="row">
-                    <p class="col-4">故障代码:</p>
-                    <p class="col-8 text-danger">
-                        {{ alarmData.content.code }}
-                    </p>
-                </div>
-                <div class="row">
-                    <p class="col-4">故障消息:</p>
-                    <p class="col-8 text-danger">{{ alarmData.content.msg }}</p>
-                </div>
-                <div class="row">
-                    <p class="col-4">故障目标:</p>
-                    <p class="col-8 text-danger">
-                        {{
-                            alarmData.dataStationId +
-                            "_" +
-                            alarmData.content.deviceId +
-                            "_" +
-                            alarmData.content.deviceIndex
-                        }}
-                    </p>
-                </div>
-                <div class="row">
-                    <p class="col-4">紧急联系:</p>
-                    <p class="col-8 text-success">12345678910</p>
-                </div>
+            <div class="alarm-box-for">
+                <transition-group name="fade">
+                    <div
+                        style="background: rgba(0, 0, 0, 0.9)"
+                        class="col-12 clear-margin-padding alarm-box-ele"
+                        v-for="alarm in alarmData"
+                        :key="alarm.dataStationId"
+                    >
+                        <div class="alarm-button-box">
+                            <div>
+                                <div class="row btn btn-info">报错有误</div>
+                            </div>
+                            <div>
+                                <div
+                                    class="row btn btn-success"
+                                    @click="
+                                        hanlderAlarm(
+                                            alarm.dataStationId,
+                                            alarm.dataStationTypeId
+                                        )
+                                    "
+                                >
+                                    已处理
+                                </div>
+                            </div>
+                            <div>
+                                <div class="row btn btn-info">拨打电话</div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <p class="col-4">故障等级:</p>
+                            <p class="col-8 text-danger">
+                                {{ alarm.content.level }}
+                            </p>
+                        </div>
+                        <div class="row">
+                            <p class="col-4">故障代码:</p>
+                            <p class="col-8 clea text-danger">
+                                {{ alarm.content.code }}
+                            </p>
+                        </div>
+                        <div class="row">
+                            <p class="col-4">故障消息:</p>
+                            <p class="col-8 text-danger">
+                                {{ alarm.content.msg }}
+                            </p>
+                        </div>
+                        <div class="row">
+                            <p class="col-4">故障目标:</p>
+                            <p class="col-8 text-danger">
+                                {{
+                                    alarm.dataStationId +
+                                    "_" +
+                                    alarm.content.deviceId +
+                                    "_" +
+                                    alarm.content.deviceIndex
+                                }}
+                            </p>
+                        </div>
+                        <div class="row">
+                            <p class="col-4">紧急联系:</p>
+                            <p class="col-8 text-success">12345678910</p>
+                        </div>
+                    </div>
+                </transition-group>
             </div>
         </div>
         <div class="col-3">
@@ -118,6 +179,10 @@
 
 <script>
 import { alarmUrl, jsonFormat } from "../../api/util";
+import { alarmHandler } from "../../api/tisinghua-static.js";
+import $ from "jquery";
+import axios from "axios";
+import { base_api } from "../../api/nevt";
 export default {
     name: "top-nav",
     created() {
@@ -126,10 +191,20 @@ export default {
     data() {
         return {
             date: null,
-            alarmData: null,
+            alarmData: [],
+            alarmShow: false,
+            adminConfirm: false,
+            loginData: {
+                username: null,
+                password: null,
+            },
+            hanlderAlarmData: {
+                dataStationId: null,
+                dataStationTypeId: null,
+            },
         };
     },
-    mounted() {
+    async mounted() {
         this.timeRefresh();
         this.receive();
     },
@@ -147,8 +222,56 @@ export default {
             var that = this;
             that.ws.onmessage = function (data) {
                 let value = jsonFormat(data);
-                that.alarmData = value.data;
+                for (var i = 0; i < value.data.length; i++) {
+                    that.alarmData[i] = value.data[i];
+                    if (value.data[i].dataStationId == 0) {
+                        that.alarmShow = false;
+                    } else {
+                        that.alarmShow = true;
+                    }
+                }
             };
+        },
+        hanlderAlarm(dataStationId, dataStationTypeId) {
+            this.adminConfirm = true;
+            this.hanlderAlarmData.dataStationId = dataStationId;
+            this.hanlderAlarmData.dataStationTypeId = dataStationTypeId;
+        },
+        login() {
+            this.loginData.username = $("#username").val();
+            this.loginData.password = $("#password").val();
+            const that = this;
+            axios({
+                method: "post",
+                url: base_api + "/login",
+                data: that.loginData,
+            })
+                .then((res) => {
+                    if (res.data.code === 201) {
+                        axios({
+                            method: "get",
+                            url: "/dummy/removeAlarm",
+                            params: that.hanlderAlarmData,
+                        })
+                            .then((res) => {
+                                console.log(res);
+                                if (res.data.data === true) {
+                                    alert("success");
+                                    that.adminConfirm = false;
+                                } else {
+                                    alert("失败");
+                                }
+                            })
+                            .catch((err) => {
+                                // console.log("err", err);
+                            });
+                    } else {
+                        alert("请重新登录");
+                    }
+                })
+                .catch((err) => {
+                    // console.log("err", err);
+                });
         },
     },
 };
@@ -209,9 +332,11 @@ Date.prototype.format = function (format) {
     top: 20%;
     left: 20%;
     width: 60%;
+    height: 500px;
     min-height: 60%;
     z-index: 8888;
     box-shadow: 0 0 10px red;
+    background-color: aqua;
     animation: alarm infinite linear alternate 0.25s;
     overflow: hidden;
     border-radius: 20px;
@@ -237,5 +362,67 @@ Date.prototype.format = function (format) {
     from {
         background: rgba(59, 1, 1, 0.7);
     }
+}
+.alarm-box-for {
+    border-top-right-radius: 30px;
+    max-height: 500px;
+    overflow-y: scroll;
+}
+.alarm-button-box {
+    position: absolute;
+    top: 70%;
+    height: 300px;
+    margin-top: -210px;
+    right: 20px;
+    z-index: 10000;
+}
+.alarm-button > div {
+    margin-left: 20px;
+}
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.5s;
+}
+
+.fade-enter,
+.fade-leave-active {
+    opacity: 0;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* 滚动槽 */
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset006pxrgba(0, 0, 0, 0.9);
+    border-radius: 10px;
+}
+
+/* 滚动条滑块 */
+::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: red;
+    -webkit-box-shadow: inset006pxrgba(0, 0, 0, 0.5);
+}
+
+::-webkit-scrollbar-thumb:window-inactive {
+    background: rgb(0, 0, 0);
+}
+
+.alarm-box-ele {
+    border-bottom: white 2px dotted;
+}
+
+.confirm-box {
+    background: #000;
+    position: absolute;
+    top: 100px;
+    width: 400px;
+    left: 50%;
+    margin-left: -200px;
+    z-index: 20000;
+    box-shadow: 0 0 10px white;
+    border-radius: 20px;
 }
 </style>

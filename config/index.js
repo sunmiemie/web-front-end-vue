@@ -28,8 +28,8 @@ module.exports = {
                 }
             },
             "/dummy": {
-                // target: "http://152.136.255.67:8989",
-                target: "http://nevt05:30204",
+                target: "http://127.0.0.1:8989",
+                // target: "http://nevt05:30204",
                 changeOrigin: true,
                 pathRewrite: {
                     "^/dummy": "/dummy"
