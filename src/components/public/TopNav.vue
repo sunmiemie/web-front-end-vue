@@ -120,9 +120,9 @@
         </div>
         <div class="col-3">
             <img
-                src="../../assets/img/tsinghua-logo-1.png"
+                src="../../assets/img/ft-logo.png"
                 alt=""
-                height="60%"
+                height="80%"
                 width="80%"
                 class="img-responsive"
             />
