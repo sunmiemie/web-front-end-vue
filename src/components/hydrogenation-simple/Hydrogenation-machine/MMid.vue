@@ -14,8 +14,6 @@
         <div class="row text-white">
             <div
                 class="col-3"
-                v-show="sixHShow"
-                v-if="paramValue.SPSGunStatus == 1"
                 style="
                     position: absolute;
                     top: 100px;
@@ -23,7 +21,7 @@
                     z-index: 1000;
                 "
             >
-                <div class="col-12 border-aqua" style="height: 150px">
+                <div class="col-12 border-aqua">
                     <p>
                         加氢枪实时流量:
                         <span class="text-green">{{
@@ -64,8 +62,6 @@
             </div>
             <div
                 class="col-4"
-                v-show="sixCarShow"
-                v-if="paramValue.SPSGunStatus == 1"
                 style="
                     position: absolute;
                     top: 240px;

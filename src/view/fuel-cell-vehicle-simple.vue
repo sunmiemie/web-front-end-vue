@@ -292,20 +292,8 @@ export default {
             itervalId: null,
             vin: null,
             ws: null,
-            dataTop: {
-                vehSpeed: 0,
-                fcFuelConsRate: 0,
-                fcVoltage: 0,
-                fcCurrent: 0,
-            },
-            dataMid: {
-                vehDCDCStatus: null,
-                fcuRunStatus: null,
-                motCtrlTemp: null,
-                motTemp: null,
-                fcH2ConcMax: null,
-                fcuCathFlow: null
-            },
+            dataTop: null,
+            dataMid: null,
         };
     },
     components: {
@@ -345,6 +333,7 @@ export default {
             var that = this;
             that.ws.onmessage = function (data) {
                 let value = jsonFormat(data);
+                console.log(value);
                 that.dataTop = value.data.content;
                 that.dataMid = value.data.content;
             };
