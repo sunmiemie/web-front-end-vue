@@ -9,7 +9,7 @@ module.exports = {
 
         // Paths
         assetsSubDirectory: 'static',
-        assetsPublicPath: './',
+        assetsPublicPath: '/',
         proxyTable: {
             "/api": {
                 // target: "http://asus.work:8888",
