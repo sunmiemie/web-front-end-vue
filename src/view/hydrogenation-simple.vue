@@ -5,7 +5,7 @@
             <p-station-title :simpleTitle="stationName" />
         </div>
         <div class="row" style="max-width: 99%; margin: 0 auto">
-            <p-station-top />
+            <p-station-top :addData="addData" />
         </div>
         <div class="row" style="max-width: 99%; margin: 0 auto">
             <p-station-mid />
@@ -23,7 +23,7 @@ import PStationMid from '../components/hydrogenation-simple/PStationMid.vue';
 import PStationBottom from '../components/hydrogenation-simple/PStationBottom.vue';
 import Scales from "../components/public/Scales.vue";
 import TopNav from "../components/public/TopNav.vue";
-import { vinByDataStationId } from "../api/tisinghua-static";
+import { statisticalAdd, statisticalAlarm, vinByDataStationId } from "../api/tisinghua-static";
 import {
     allValues,
     data_station_type,
@@ -42,6 +42,12 @@ export default {
             ws: null,
             stationId: null,
             stationName: null,
+            addData: {
+                addDay: 0,
+                addMonth: 0,
+                addYear: 0,
+                alarm: 0,
+            },
             dataBottom: {}
         };
     },
@@ -56,6 +62,26 @@ export default {
     async mounted() {
         this.stationName = getUrlKey("name");
         this.stationId = getUrlKey("id");
+        const day = {
+            dataStationId: this.stationId,
+            date: "day"
+        };
+        const month = {
+            dataStationId: this.stationId,
+            date: "month"
+        };
+        const year = {
+            dataStationId: this.stationId,
+            date: "year"
+        };
+        const alarmYear = {
+             dataStationId: this.stationId,
+            date: "year"
+        }
+        this.addData.addDay = await statisticalAdd(day);
+        this.addData.addMonth = await statisticalAdd(month);
+        this.addData.addYear = await statisticalAdd(year);
+        this.addData.alarm = await statisticalAlarm(alarmYear);
         this.receive();
     },
     methods: {

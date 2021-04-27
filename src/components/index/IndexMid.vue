@@ -10,7 +10,12 @@
                         <p clas>本日加氢量</p>
                     </div>
                     <div class="col-5">
-                         <p class="text-right"><span class=" font-number">000</span>KG</p>
+                        <p class="text-right">
+                            <span class="font-number">{{
+                                addTotalData.aDay.data
+                            }}</span
+                            >KG
+                        </p>
                     </div>
                 </div>
                 <div class="row">
@@ -18,7 +23,12 @@
                         <p clas>本月加氢量</p>
                     </div>
                     <div class="col-5">
-                         <p class="text-right"><span class=" font-number">138.69</span>KG</p>
+                        <p class="text-right">
+                            <span class="font-number">{{
+                                addTotalData.aMonth.data
+                            }}</span
+                            >KG
+                        </p>
                     </div>
                 </div>
                 <div class="row">
@@ -26,7 +36,12 @@
                         <p clas>本年加氢量</p>
                     </div>
                     <div class="col-5">
-                        <p class="text-right"><span class=" font-number">2225</span>KG</p>
+                        <p class="text-right">
+                            <span class="font-number">{{
+                                addTotalData.aYear.data
+                            }}</span
+                            >KG
+                        </p>
                     </div>
                 </div>
             </div>
@@ -44,7 +59,9 @@
                         <p clas>当前接入车辆</p>
                     </div>
                     <div class="col-5">
-                        <p class="text-right font-number">000</p>
+                        <p class="text-right font-number">
+                            {{ addTotalData.carCount }}
+                        </p>
                     </div>
                 </div>
                 <div class="row">
@@ -52,22 +69,26 @@
                         <p clas>当前车辆报警数</p>
                     </div>
                     <div class="col-5">
-                        <p class="text-right font-number">000</p>
+                        <p
+                            class="text-right font-number"
+                        >5</p>
                     </div>
                 </div>
             </div>
         </div>
         <div class="row border-aqua margin-top-10">
-            <index-car class=" clear-margin-padding" />
+            <index-car class="clear-margin-padding" />
         </div>
     </div>
 </template>
 
 <script>
-import DoubleTable from '../table/DoubleTable.vue';
-import IndexCar from '../table/IndexCar.vue';
+import DoubleTable from "../table/DoubleTable.vue";
+import IndexCar from "../table/IndexCar.vue";
 export default {
-    components: { DoubleTable, IndexCar },};
+    props: ["addTotalData"],
+    components: { DoubleTable, IndexCar },
+};
 </script>
 
 <style>
