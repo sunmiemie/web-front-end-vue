@@ -158,8 +158,13 @@ export default {
     data() {
         return {
             carrierId: null,
-            carrierData: null,
-        };
+            carrierData: {
+                CCTHyPres: 0,
+                CCTHyMass: 0,
+                CCTLeak: 0,
+                CCTHyTemp: 0
+            }
+        }
     },
     components: {
         Scales,
@@ -172,14 +177,14 @@ export default {
     },
     methods: {
         initWs() {
-            var result = allValues(
+            const result = allValues(
                 data_station_type.carrier,
                 getUrlKey("carrierId")
             );
             this.ws = this.websocket.ws(result);
         },
         receive() {
-            var that = this;
+            const that = this;
             that.ws.onmessage = function (data) {
                 let value = jsonFormat(data);
                 that.carrierData = value.data.content;
