@@ -89,7 +89,7 @@
                             </div>
                             <div class="row">
                                 <p class="col-12 text-center top-line-height">
-                                    <span class="font-number" v-text="dataTop.fcCurrent">00</span>A
+                                    <span class="font-number" v-text="dataTop.motCtrlDCBusCurr">00</span>A
                                 </p>
                             </div>
                         </div>
@@ -103,7 +103,7 @@
                             </div>
                             <div class="row">
                                 <p class="col-12 text-center top-line-height">
-                                    <span class="font-number" v-text="dataTop.fcVoltage">00</span>V
+                                    <span class="font-number" v-text="dataTop.motCtrlInpVolt">00</span>V
                                 </p>
                             </div>
                         </div>
@@ -161,7 +161,7 @@
                         </div>
                         <div class="row">
                             <p class="col-12 text-center top-line-height">
-                                <span class="text-green" v-text="dataMid.vehDCDCStatus">正常</span>
+                                <span class="text-green" v-text="dataMid.fcDCDCStatus">正常</span>
                             </p>
                         </div>
                     </div>
@@ -220,26 +220,26 @@
                     class="row border-aqua margin-top-10"
                     style="height: 300px"
                 >
-                    <p class="text-center col-12">燃料电池注册信息</p>
+                    <p class="text-center col-12">燃料电池车</p>
                     <div class="row col-12">
-                        <p class="col-6">类型:</p>
-                        <p class="col-6 text-green">暂无</p>
+                        <p class="col">类型:</p>
+                        <p class="col text-green">暂无</p>
                     </div>
                     <div class="row col-12">
-                        <p class="col-6">VIN:</p>
-                        <p class="col-6 text-green" v-text="vin">暂无</p>
+                        <p class="col">VIN:</p>
+                        <p class="col text-green" v-text="vin">暂无</p>
                     </div>
                     <div class="row col-12">
-                        <p class="col-6">车牌:</p>
-                        <p class="col-6 text-green">暂无</p>
+                        <p class="col">车牌:</p>
+                        <p class="col text-green">暂无</p>
                     </div>
                     <div class="row col-12">
-                        <p class="col-6">生产商:</p>
-                        <p class="col-6 text-green">暂无</p>
+                        <p class="col">生产商:</p>
+                        <p class="col text-green">暂无</p>
                     </div>
                     <div class="row col-12">
-                        <p class="col-6">注册时间:</p>
-                        <p class="col-6 text-green">暂无</p>
+                        <p class="col">登录时间:</p>
+                        <p class="col text-green" v-text="dataMid.CTime">暂无</p>
                     </div>
                 </div>
                 <div
@@ -333,7 +333,6 @@ export default {
             var that = this;
             that.ws.onmessage = function (data) {
                 let value = jsonFormat(data);
-                console.log(value);
                 that.dataTop = value.data.content;
                 that.dataMid = value.data.content;
             };

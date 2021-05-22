@@ -467,7 +467,7 @@ Date.prototype.format = function (format) {
 
 .alarm-icon {
     position: absolute;
-    right: 300px;
+    right: 22%;
     z-index: 20000;
 }
 </style>

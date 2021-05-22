@@ -8,10 +8,21 @@
 <script>
 import { eb_line } from "../../../assets/js/table.js";
 import { data_max_list,x_date } from "../../../assets/js/public.js";
+import { statisticalAlarm, statisticalAddList } from "../../../api/tisinghua-static";
 export default {
     components: { },
-    mounted() {
+    data(){
+        return {
+            alarm: null,
+        }
+    },
+    async mounted() {
         this.drawLine();
+        const data = {
+            dataStationId: 2000001,
+            date: "year"
+        };
+        this.alarm = await statisticalAlarm(data);
     },
     methods: {
         drawLine() {

@@ -8,8 +8,8 @@
                 <div class="col-3">当前故障报警</div>
             </div>
             <div class="row text-center text-shadow">
-                <div class="col-3"><span class="text-g-number">0000</span>KG</div>
-                <div class="col-3"><span class="text-g-number">2900</span>KG</div>
+                <div class="col-3"><span class="text-g-number">{{ manufactureData.day.data}}</span>KG</div>
+                <div class="col-3"><span class="text-g-number">{{ manufactureData.month.data}} </span>KG</div>
                 <div class="col-3"><span class="text-g-number">2800</span>KG</div>
                 <div class="col-3"><span class="text-g-number">0000</span></div>
             </div>
@@ -21,6 +21,7 @@
 <script>
 import BaiduMap from '../../components/public/BaiduMap.vue'
 export default {
+    props: ["manufactureData"],
     components: {  BaiduMap  },
 
 }

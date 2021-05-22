@@ -1,7 +1,7 @@
 <template>
     <div class="col-3 index-left">
         <div class="row">
-            <p class="col-12 text-center h5">制氢厂监控</p>
+            <p class="col-12 text-center h5">制氢厂监控 (kg)</p>
         </div>
         <div class="row border-aqua">
             <div class="row col-12">
@@ -9,16 +9,20 @@
                     <p>
                         本日制氢量&nbsp;&nbsp;&nbsp;&nbsp;<span
                             class="font-number"
-                            >00000</span
-                        >kg
+                            >
+                            {{ lData.pDay.data }}
+                            </span
+                        >
                     </p>
                 </div>
                 <div class="col-6">
                     <p>
                         本日售氢量&nbsp;&nbsp;&nbsp;&nbsp;<span
                             class="font-number"
-                            >00000</span
-                        >kg
+                            >
+                            {{ lData.sellDay.data }}
+                            </span
+                        >
                     </p>
                 </div>
             </div>
@@ -27,16 +31,20 @@
                     <p>
                         本月制氢量&nbsp;&nbsp;&nbsp;&nbsp;<span
                             class="font-number"
-                            >2225</span
-                        >kg
+                            >
+                            {{ lData.pMonth.data }}
+                            </span
+                        >
                     </p>
                 </div>
                 <div class="col-6">
                     <p>
                         本月售氢量&nbsp;&nbsp;&nbsp;&nbsp;<span
                             class="font-number"
-                            >00000</span
-                        >kg
+                            >
+                            {{ lData.sellMonth.data }}
+                            </span
+                        >
                     </p>
                 </div>
             </div>
@@ -45,16 +53,20 @@
                     <p>
                         本年制氢量&nbsp;&nbsp;&nbsp;&nbsp;<span
                             class="font-number"
-                            >00000</span
-                        >kg
+                            >
+                            {{ lData.pYear.data }}
+                            </span
+                        >
                     </p>
                 </div>
                 <div class="col-6">
                     <p>
                         本年售氢量&nbsp;&nbsp;&nbsp;&nbsp;<span
                             class="font-number"
-                            >00000</span
-                        >kg
+                            >
+                            {{ lData.sellYear.data }}
+                            </span
+                        >
                     </p>
                 </div>
             </div>
@@ -74,8 +86,10 @@
                     <p>
                         本日运氢量&nbsp;&nbsp;&nbsp;&nbsp;<span
                             class="font-number"
-                            >00000</span
-                        >kg
+                            >
+                            {{ lData.tDay.data }}
+                            </span
+                        >
                     </p>
                 </div>
                 <div class="col-6">
@@ -92,8 +106,10 @@
                     <p>
                         本月运氢量&nbsp;&nbsp;&nbsp;&nbsp;<span
                             class="font-number"
-                            >00000</span
-                        >kg
+                            >
+                            {{ lData.tMonth.data }}
+                            </span
+                        >
                     </p>
                 </div>
                 <div class="col-6">
@@ -110,8 +126,10 @@
                     <p>
                         本年运氢量&nbsp;&nbsp;&nbsp;&nbsp;<span
                             class="font-number"
-                            >00000</span
-                        >kg
+                            >
+                            {{ lData.tYear.data }}
+                            </span
+                        >
                     </p>
                 </div>
                 <div class="col-6">
@@ -132,6 +150,7 @@ import DoubleTableFactory from "../table/DoubleTableFactory.vue";
 import MonthTransport from "../table/MonthTransport.vue";
 import YearTransport from '../table/YearTransport.vue';
 export default {
+    props: ["lData"],
     components: { DoubleTableFactory, MonthTransport, YearTransport },
 };
 </script>
