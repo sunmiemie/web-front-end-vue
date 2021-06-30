@@ -9,9 +9,9 @@ const station = "&station=";
 const device = "&device=";
 const paramName = "&paramName=";
 const param = "&param=";
-const alarmUrl = "ws://8.140.121.238:30204/ws?alarm=true";
-const testUrl = "ws://8.140.121.238:30204/ws";
-const baseUrl = "ws://8.140.121.238:30204/ws";
+const alarmUrl = `ws://${location.host}/ws?alarm=true`;
+const testUrl = `ws://${location.host}/ws`;
+const baseUrl = `ws://${location.host}/ws`;
 const creat_ws_api = function () {
 
     switch (arguments.length) {
