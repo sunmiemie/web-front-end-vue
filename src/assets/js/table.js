@@ -5,6 +5,7 @@ import {
 import {
     x_date
 } from './public.js'
+
 var eb_f = function (dataList, colorList, titleList, unitList, xArary, max, el, zomFlag, flag) {
     // let ebone = this.$echarts.init(document.getElementById(id));
     var end = zomFlag == false ? 50 : 100;
@@ -103,15 +104,15 @@ var eb_f = function (dataList, colorList, titleList, unitList, xArary, max, el, 
                 color: '#fff'
             }
         },
-        {
-            type: 'inside',
-            realtime: true,
-            start: 50,
-            end: 100,
-            textStyle: {
-                color: '#fff'
+            {
+                type: 'inside',
+                realtime: true,
+                start: 50,
+                end: 100,
+                textStyle: {
+                    color: '#fff'
+                }
             }
-        }
         ],
         series: [{
             name: titleList[0],
@@ -122,15 +123,15 @@ var eb_f = function (dataList, colorList, titleList, unitList, xArary, max, el, 
             },
             data: dataList[0]
         },
-        {
-            name: titleList[1],
-            type: 'bar',
-            barWidth: '20%',
-            itemStyle: {
-                barBorderRadius: 10,
-            },
-            data: dataList[1]
-        }
+            {
+                name: titleList[1],
+                type: 'bar',
+                barWidth: '20%',
+                itemStyle: {
+                    barBorderRadius: 10,
+                },
+                data: dataList[1]
+            }
         ]
     }
     el.setOption(option, true);
@@ -246,15 +247,15 @@ var eb_bar_double = function (dataList, colorList, titleList, unitList, xArray, 
                 color: '#fff'
             }
         },
-        {
-            type: 'inside',
-            realtime: true,
-            start: 50,
-            end: 100,
-            textStyle: {
-                color: '#fff'
+            {
+                type: 'inside',
+                realtime: true,
+                start: 50,
+                end: 100,
+                textStyle: {
+                    color: '#fff'
+                }
             }
-        }
         ],
         series: [
             //虚线
@@ -418,15 +419,15 @@ var eb_line_double = function (dataList, colorList, titleList, unitList, xArray,
                 color: '#fff'
             }
         },
-        {
-            type: 'inside',
-            realtime: true,
-            start: 50,
-            end: 100,
-            textStyle: {
-                color: '#fff'
+            {
+                type: 'inside',
+                realtime: true,
+                start: 50,
+                end: 100,
+                textStyle: {
+                    color: '#fff'
+                }
             }
-        }
         ],
         series: [
             //虚线
@@ -480,7 +481,6 @@ var eb_line_double = function (dataList, colorList, titleList, unitList, xArray,
     el.setOption(option, true);
 };
 var eb_line = function (dataList, colorList, titleList, unitList, xArray, max, el, flag, y2) {
-    // let ebone = this.$echarts.init(document.getElementById(id));
     var option = {
         backgroundColor: '',
         // color: ["#FF2160", "#E8E637"],
@@ -567,15 +567,15 @@ var eb_line = function (dataList, colorList, titleList, unitList, xArray, max, e
                 color: '#fff'
             }
         },
-        {
-            type: 'inside',
-            realtime: true,
-            start: 50,
-            end: 100,
-            textStyle: {
-                color: '#fff'
+            {
+                type: 'inside',
+                realtime: true,
+                start: 50,
+                end: 100,
+                textStyle: {
+                    color: '#fff'
+                }
             }
-        }
         ],
         series: [
             //虚线
@@ -710,79 +710,79 @@ var three_dr = function (threeDr, color, flag, flag2) {
             },
             animationDuration: 4000,
         },
-        {
-            name: '外部刻度',
-            type: 'gauge',
-            //  center: ['20%', '50%'],
-            radius: '50%',
-            min: 0, //最小刻度
-            max: 100, //最大刻度
-            splitNumber: 10, //刻度数量
-            startAngle: 225,
-            endAngle: -45,
-            axisLine: {
-                show: true,
-                lineStyle: {
-                    width: 1,
-                    color: [
-                        [1, 'rgba(0,0,0,0)']
-                    ]
-                }
-            }, //仪表盘轴线
-            axisLabel: {
-                show: true,
-                color: '#4d5bd1',
-                distance: 25,
-                formatter: function (v) {
-                    switch (v + '') {
-                        case '0':
-                            return '0';
-                        case '10':
-                            return '10';
-                        case '20':
-                            return '20';
-                        case '30':
-                            return '30';
-                        case '40':
-                            return '40';
-                        case '50':
-                            return '50';
-                        case '60':
-                            return '60';
-                        case '70':
-                            return '70';
-                        case '80':
-                            return '80';
-                        case '90':
-                            return '90';
-                        case '100':
-                            return '100';
+            {
+                name: '外部刻度',
+                type: 'gauge',
+                //  center: ['20%', '50%'],
+                radius: '50%',
+                min: 0, //最小刻度
+                max: 100, //最大刻度
+                splitNumber: 10, //刻度数量
+                startAngle: 225,
+                endAngle: -45,
+                axisLine: {
+                    show: true,
+                    lineStyle: {
+                        width: 1,
+                        color: [
+                            [1, 'rgba(0,0,0,0)']
+                        ]
                     }
-                }
-            }, //刻度标签。
-            axisTick: {
-                show: true,
-                splitNumber: 7,
-                lineStyle: {
-                    color: colorSet.color, //用颜色渐变函数不起作用
-                    width: 1,
+                }, //仪表盘轴线
+                axisLabel: {
+                    show: true,
+                    color: '#4d5bd1',
+                    distance: 25,
+                    formatter: function (v) {
+                        switch (v + '') {
+                            case '0':
+                                return '0';
+                            case '10':
+                                return '10';
+                            case '20':
+                                return '20';
+                            case '30':
+                                return '30';
+                            case '40':
+                                return '40';
+                            case '50':
+                                return '50';
+                            case '60':
+                                return '60';
+                            case '70':
+                                return '70';
+                            case '80':
+                                return '80';
+                            case '90':
+                                return '90';
+                            case '100':
+                                return '100';
+                        }
+                    }
+                }, //刻度标签。
+                axisTick: {
+                    show: true,
+                    splitNumber: 7,
+                    lineStyle: {
+                        color: colorSet.color, //用颜色渐变函数不起作用
+                        width: 1,
+                    },
+                    length: -8
+                }, //刻度样式
+                splitLine: {
+                    show: true,
+                    length: -20,
+                    lineStyle: {
+                        color: colorSet.color, //用颜色渐变函数不起作用
+                    }
+                }, //分隔线样式
+                detail: {
+                    show: false
                 },
-                length: -8
-            }, //刻度样式
-            splitLine: {
-                show: true,
-                length: -20,
-                lineStyle: {
-                    color: colorSet.color, //用颜色渐变函数不起作用
+                pointer: {
+                    show: false
                 }
-            }, //分隔线样式
-            detail: {
-                show: false
             },
-            pointer: {
-                show: false
-            }
-        },
         ]
     };
     threeDr.setOption(option, true);
@@ -932,17 +932,17 @@ var index_car = function (el, colorList, nameList, valueList, titleFlag, unit) {
                 name: nameList[1]
                 //   name: '本月用氢量'
             },
-            {
-                value: valueList[2],
-                //   value: 189,
-                name: nameList[2]
-                //   name: '本年用氢量'
-            }
+                {
+                    value: valueList[2],
+                    //   value: 189,
+                    name: nameList[2]
+                    //   name: '本年用氢量'
+                }
             ],
             label: {
                 normal: {
                     //   formatter: '{font|{c}}\n{hr|}\n{font|{d}%}',
-                    formatter: '{font|{c}' + unit + '}',
+                    formatter: '{c}',
                     rich: {
                         font: {
                             fontSize: 10,
@@ -1207,15 +1207,15 @@ var eb_f_line = function (data1, data2, colorList, nameList, el, flag, max, type
                 color: '#fff'
             }
         },
-        {
-            type: 'inside',
-            realtime: true,
-            start: 50,
-            end: 100,
-            textStyle: {
-                color: '#fff'
+            {
+                type: 'inside',
+                realtime: true,
+                start: 50,
+                end: 100,
+                textStyle: {
+                    color: '#fff'
+                }
             }
-        }
         ],
         series: [{
             name: nameList[0],
@@ -1226,19 +1226,20 @@ var eb_f_line = function (data1, data2, colorList, nameList, el, flag, max, type
             },
             data: data1
         },
-        {
-            name: nameList[1],
-            type: typeList[1],
-            barWidth: '20%',
-            itemStyle: {
-                barBorderRadius: 10,
-            },
-            data: data2
-        }
+            {
+                name: nameList[1],
+                type: typeList[1],
+                barWidth: '20%',
+                itemStyle: {
+                    barBorderRadius: 10,
+                },
+                data: data2
+            }
         ]
     }
     el.setOption(option, true);
 };
+
 
 export { //导出函数,
     eb_line,
@@ -1250,5 +1251,5 @@ export { //导出函数,
     ranking,
     eb_f_line,
     eb_line_double,
-    eb_bar_double
+    eb_bar_double,
 }

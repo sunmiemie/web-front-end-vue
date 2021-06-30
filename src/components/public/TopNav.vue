@@ -138,10 +138,10 @@
         </div>
         <div class="col-3">
             <img
-                src="../../assets/img/tsinghua-logo-1.png"
+                src="../../assets/img/logo.png"
                 alt=""
                 height="80%"
-                width="100%"
+                width="80%"
                 class="img-responsive"
             />
 <!--            <img
@@ -154,7 +154,7 @@
         </div>
         <div class="col-6">
             <div class="row">
-                <div class="col-2 offset-1 nav-text-shadow">
+                <div class="col-2 nav-text-shadow">
                     <router-link
                         to="/index"
                         class="nav-font-size"
@@ -196,6 +196,15 @@
                         class="nav-font-size"
                         active-class="_active"
                     >燃料电池车
+                    </router-link
+                    >
+                </div>
+                <div class="col-2 nav-text-shadow">
+                    <router-link
+                        to="/hydrogenation-home"
+                        class="nav-font-size"
+                        active-class="_active"
+                    >氢进万家
                     </router-link
                     >
                 </div>
@@ -474,7 +483,8 @@ Date.prototype.format = function (format) {
 
 .alarm-icon {
     position: absolute;
-    right: 15%;
+    right: 20%;
     z-index: 20000;
+    width: 100px;
 }
 </style>
