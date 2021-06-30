@@ -2,8 +2,7 @@
 
 #### 介绍
 
-**NEVT 科技东奥大数据平台展示页面**
-[预览地址](http://asus.work)
+**北清智创氢能监管大数据平台**
 
 #### 软件架构
 
@@ -19,7 +18,7 @@
 - 下载
 
   - ```
-    git clone https://gitee.com/nevt/web-front-end-vue.git
+    git clone https://gitee.com/nevt/web-front-end-vue.git  <bqzc分支>
     ```
 
 - 安装依赖
@@ -40,12 +39,12 @@
 
 ```
 ├─build                 // 打包环境
-│      
+│
 ├─config                // 开发部署配置
-│      
+│
 ├─node_modules			//依赖模块
-│      
-│  
+│
+│
 ├─src                   // 项目源文件
 │  │  main.js           // 入口文件
 │  ├─api                // 请求接口
@@ -59,7 +58,7 @@
 │  ├─components         // 业务组件
 │  ├─view               // 页面组件
 │  ├─router             // 路由管理
-│              
+│
 │  .babelrc             // babel配置
 │  .editorconfig        // editor配置
 │  .gitignore           // git忽略配置
