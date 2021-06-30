@@ -22,8 +22,8 @@ export var removeToken = () => {
     sessionStorage.clear();
 }
 export var failLogin = (time) => {
-    var rsult = JSON.parse(Date.now() + time);
-    localStorage.setItem("fail-login-number", rsult);
+    const result = JSON.parse(Date.now() + time);
+    localStorage.setItem("fail-login-number", result);
 }
 export var getFail = () => {
     return localStorage.getItem("fail-login-number") == null ? false : true;

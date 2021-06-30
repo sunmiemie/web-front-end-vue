@@ -21,7 +21,6 @@ import Scales from '../components/public/Scales.vue'
 import TopNav from '../components/public/TopNav.vue'
 export default {
     components: { Scales, TopNav, Bottom, Right, Mid, Left,   },
-
 }
 </script>
 

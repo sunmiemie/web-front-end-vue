@@ -10,6 +10,18 @@ export const onlineCarCount = () => {
     return creatAxios("/onlineCarCount")
 }
 
+export const isOnlineCarById = (data) => {
+    return creatAxiosData("/isOnlineCar",data)
+}
+
+export const allOfflineCar = () => {
+    return creatAxios("/allOfflineCar");
+}
+
+export const allOnlineCar = () => {
+    return creatAxios("/allOnlineCar");
+}
+
 export const allVehicleAddr = () => {
     return creatAxios("/allVehicleAddr");
 }
@@ -96,7 +108,7 @@ const creatAxios = (url) => {
         url: url_pre + url,
     }).then((res) => {
         let data = res.data;
-        if (data.code == 2000) {
+        if (data.code === 2000) {
             // console.log(data.data);
             return data.data;
         }

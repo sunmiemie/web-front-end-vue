@@ -39,7 +39,7 @@
                             </div>
                             <div class="row">
                                 <p class="col-12 text-center top-line-height">
-                                    <span class="font-number" v-text="dataMid.fcuCathFlow">00</span>Kg
+                                    <span class="font-number">{{dataMid.fcuCathFlow}}</span>Kg
                                 </p>
                             </div>
                         </div>
@@ -53,7 +53,7 @@
                             </div>
                             <div class="row">
                                 <p class="col-12 text-center top-line-height">
-                                    <span class="font-number" v-text="dataTop.fcFuelConsRate">00</span>Kg
+                                    <span class="font-number">{{dataTop.fcFuelConsRate}}</span>Kg
                                 </p>
                             </div>
                         </div>
@@ -67,7 +67,7 @@
                             </div>
                             <div class="row">
                                 <p class="col-12 text-center top-line-height">
-                                    <span class="font-number" v-text="dataMid.fcH2ConcMax">00</span>%
+                                    <span class="font-number">{{dataMid.fcH2ConcMax}}</span>%
                                 </p>
                             </div>
                         </div>
@@ -89,7 +89,7 @@
                             </div>
                             <div class="row">
                                 <p class="col-12 text-center top-line-height">
-                                    <span class="font-number" v-text="dataTop.motCtrlDCBusCurr">00</span>A
+                                    <span class="font-number">{{dataTop.motCtrlDCBusCurr}}</span>A
                                 </p>
                             </div>
                         </div>
@@ -103,7 +103,7 @@
                             </div>
                             <div class="row">
                                 <p class="col-12 text-center top-line-height">
-                                    <span class="font-number" v-text="dataTop.motCtrlInpVolt">00</span>V
+                                    <span class="font-number">{{ dataTop.motCtrlInpVolt }}</span>V
                                 </p>
                             </div>
                         </div>
@@ -117,7 +117,7 @@
                             </div>
                             <div class="row">
                                 <p class="col-12 text-center top-line-height">
-                                    <span class="font-number" v-text="dataMid.motTemp">00</span>℃
+                                    <span class="font-number">{{dataMid.motTemp}}</span>℃
                                 </p>
                             </div>
                         </div>
@@ -137,7 +137,7 @@
                         </div>
                         <div class="row">
                             <p class="col-12 text-center top-line-height">
-                                <span class="font-number" v-text="dataTop.fcCurrent">00</span>A
+                                <span class="font-number">{{ dataTop.fcCurrent }}</span>A
                             </p>
                         </div>
                     </div>
@@ -149,7 +149,7 @@
                         </div>
                         <div class="row">
                             <p class="col-12 text-center top-line-height">
-                                <span class="font-number" v-text="dataTop.fcVoltage">00</span>V
+                                <span class="font-number">{{ dataTop.fcVoltage }}</span>V
                             </p>
                         </div>
                     </div>
@@ -161,7 +161,7 @@
                         </div>
                         <div class="row">
                             <p class="col-12 text-center top-line-height">
-                                <span class="text-green" v-text="dataMid.fcDCDCStatus">正常</span>
+                                <span class="text-green">{{ dataMid.fcDCDCStatus }}</span>
                             </p>
                         </div>
                     </div>
@@ -173,7 +173,7 @@
                         </div>
                         <div class="row">
                             <p class="col-12 text-center top-line-height">
-                                <span class="text-green" v-text="dataMid.fcuRunStatus">正常</span>
+                                <span class="text-green">{{ dataMid.fcuRunStatus }}</span>
                             </p>
                         </div>
                     </div>
@@ -185,7 +185,7 @@
                         </div>
                         <div class="row">
                             <p class="col-12 text-center top-line-height">
-                                <span class="font-number" v-text="dataMid.motCtrlTemp">00</span>℃
+                                <span class="font-number">{{ dataMid.motCtrlTemp }}</span>℃
                             </p>
                         </div>
                     </div>
@@ -227,7 +227,7 @@
                     </div>
                     <div class="row col-12">
                         <p class="col">VIN:</p>
-                        <p class="col text-green" v-text="vin">暂无</p>
+                        <p class="col text-green">{{ vin }}</p>
                     </div>
                     <div class="row col-12">
                         <p class="col">车牌:</p>
@@ -239,7 +239,7 @@
                     </div>
                     <div class="row col-12">
                         <p class="col">登录时间:</p>
-                        <p class="col text-green" v-text="dataMid.CTime">暂无</p>
+                        <p class="col text-green">{{ dataMid.CTime }}</p>
                     </div>
                 </div>
                 <div
@@ -292,8 +292,8 @@ export default {
             itervalId: null,
             vin: null,
             ws: null,
-            dataTop: null,
-            dataMid: null,
+            dataTop: {},
+            dataMid: {},
         };
     },
     components: {
@@ -323,14 +323,14 @@ export default {
             });
         },
         initWs() {
-            var result = allValues(
+            const result = allValues(
                 data_station_type.vehicle,
                 getUrlKey("carId")
             );
             this.ws = this.websocket.ws(result);
         },
         receive() {
-            var that = this;
+            const that = this;
             that.ws.onmessage = function (data) {
                 let value = jsonFormat(data);
                 that.dataTop = value.data.content;

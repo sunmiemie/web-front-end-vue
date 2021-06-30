@@ -138,12 +138,19 @@
         </div>
         <div class="col-3">
             <img
+                src="../../assets/img/tsinghua-logo-1.png"
+                alt=""
+                height="80%"
+                width="100%"
+                class="img-responsive"
+            />
+<!--            <img
                 src="../../assets/img/ft-logo.png"
                 alt=""
                 height="80%"
                 width="80%"
                 class="img-responsive"
-            />
+            />-->
         </div>
         <div class="col-6">
             <div class="row">
@@ -467,7 +474,7 @@ Date.prototype.format = function (format) {
 
 .alarm-icon {
     position: absolute;
-    right: 22%;
+    right: 15%;
     z-index: 20000;
 }
 </style>

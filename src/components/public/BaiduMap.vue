@@ -71,9 +71,14 @@
                 </bm-marker>
             </div>
             <div v-if="carShow">
+<!--                <div class="car-box-mouse" v-if="carMouseOver()">
+
+                </div>-->
                 <bml-marker-clusterer :averageCenter="true">
                     <bm-marker
-                        v-for="car in vehicleList"
+                        v-for="car in onlineCarList"
+                        :lazy="true"
+                        :stretch="true"
                         :key="car.id"
                         :position="{
                             lng: car.longitude,
@@ -81,7 +86,30 @@
                         }"
                         :draggable="false"
                         :icon="{
-                            url: require('../../assets/svg/car.svg'),
+                            url: require('../../assets/svg/car-online.svg'),
+                            size: {
+                                width: 40,
+                                height: 40,
+                            },
+                        }"
+                        animation="BMAP_ANIMATION_DROP"
+                        @click="toVehicleSimple(car.id)"
+                    >
+                    </bm-marker>
+                </bml-marker-clusterer>
+                <bml-marker-clusterer :averageCenter="true">
+                    <bm-marker
+                        v-for="car in offlineCarList"
+                        :lazy="true"
+                        :stretch="true"
+                        :key="car.id"
+                        :position="{
+                            lng: car.longitude,
+                            lat: car.latitude,
+                        }"
+                        :draggable="false"
+                        :icon="{
+                            url: require('../../assets/svg/car-offline.svg'),
                             size: {
                                 width: 40,
                                 height: 40,
@@ -93,23 +121,23 @@
                     </bm-marker>
                 </bml-marker-clusterer>
             </div>
+
             <div v-if="carrierShow">
                 <bml-marker-clusterer :averageCenter="true">
                     <bm-marker
-                        v-for="carrier in carrierAddr"
                         :key="carrier.id"
                         :position="{
-                            lng: carrier.longitude,
-                            lat: carrier.latitude,
-                        }"
+                        lng: carrier.longitude,
+                        lat: carrier.latitude,
+                    }"
                         :draggable="false"
                         :icon="{
-                            url: require('../../assets/svg/carrier.svg'),
-                            size: {
-                                width: 40,
-                                height: 40,
-                            },
-                        }"
+                        url: require('../../assets/svg/carrier.svg'),
+                        size: {
+                            width: 40,
+                            height: 40,
+                        },
+                    }"
                         animation="BMAP_ANIMATION_DROP"
                     >
                     </bm-marker>
@@ -192,7 +220,7 @@
         </div>
         <div class="demo-icon-2" v-if="carShow">
             <img
-                src="../../assets/svg/car.svg"
+                src="../../assets/svg/car-online.svg"
                 class="icon-center img-responsive"
                 alt=""
             />
@@ -202,30 +230,33 @@
 </template>
 <script>
 import {
-    BmLabel,
-    BmMarker,
     BaiduMap,
-    BmScale,
-    BmGeolocation,
-    BmDriving,
     BmCityList,
+    BmDriving,
+    BmGeolocation,
+    BmLabel,
     BmlMarkerClusterer,
+    BmMarker,
+    BmScale,
 } from "vue-baidu-map";
 import $ from "jquery";
-import { car_palte } from "../../assets/js/public.js";
 import {
-    allVehicleAddr,
-    allFactoryAddr,
-    allStationAddr,
     allCarrierAddr,
+    allFactoryAddr, allOfflineCar, allOnlineCar,
+    allStationAddr,
 } from "../../api/tisinghua-static";
+
+const pathColor = ["#ff7700", "#00ffc6", "#f8e71c", "#0075ff"];
 export default {
     data() {
         return {
-            vehicleList: [],
             factoryAddr: [],
             stationAddr: [],
             carrierAddr: [],
+            carMouse: {},
+            carMouseShow: false,
+            onlineCarList: [],
+            offlineCarList: [],
             center: { lng: 0, lat: 0 }, //经纬度
             zoom: 9, //地图展示级别
             lableTxt: {
@@ -396,7 +427,8 @@ export default {
     },
     props: ["mapHeight", "dShow", "carShow", "carrierShow"],
     async mounted() {
-        this.vehicleList = await allVehicleAddr();
+        this.onlineCarList = await allOfflineCar();
+        this.offlineCarList = await allOnlineCar();
         this.factoryAddr = await allFactoryAddr();
         this.stationAddr = await allStationAddr();
         this.carrierAddr = await allCarrierAddr();
@@ -406,6 +438,10 @@ export default {
             this.circlePath.center = e.target.getCenter();
             this.circlePath.radius = e.target.getRadius();
         },
+        /*carMouseOver(car) {
+            this.carMouse = car;
+            return true;
+        },*/
         handler({ BMap, map }) {
             // console.log(BMap, map);
             this.center.lng = 116.404;
@@ -434,10 +470,10 @@ export default {
         changePathColor(flag) {
             if (flag) {
                 this.changeEndAndStartIcon(flag);
-                var length = $("[stroke-linejoin]").length;
+                const length = $("[stroke-linejoin]").length;
                 // console.log(length);
-                var index = 0;
-                for (var i = 0; i < length; i++) {
+                let index = 0;
+                for (let i = 0; i < length; i++) {
                     $("[stroke-linejoin]:nth-child(" + (i + 1) + ")").attr({
                         "stroke-opacity": "0.7",
                         stroke: pathColor[index],
@@ -447,12 +483,12 @@ export default {
             }
         },
         changeEndAndStartIcon(show) {
-            var length = $(".BMap_Marker img").length;
-            for (var i = 0; i < length; i++) {
-                var flag = $(".BMap_Marker:nth-child(" + (i + 1) + ") img")
+            const length = $(".BMap_Marker img").length;
+            for (let i = 0; i < length; i++) {
+                const flag = $(".BMap_Marker:nth-child(" + (i + 1) + ") img")
                     .attr("src")
                     .indexOf("http");
-                if (flag == 0 && show) {
+                if (flag === 0 && show) {
                     $(".BMap_Marker:nth-child(" + (i + 1) + ")").css(
                         "z-index",
                         "10000"
@@ -470,10 +506,17 @@ export default {
             });
         },
     },
-};
-var pathColor = ["#ff7700", "#00ffc6", "#f8e71c", "#0075ff"];
-</script>
+};</script>
 <style>
+.car-box-mouse {
+    position: relative;
+    bottom: 200px;
+    left: 0;
+    width: 200px;
+    height: 200px;
+    border: 1px solid red;
+    z-index: 20000;
+}
 .map {
     width: 100%;
 }

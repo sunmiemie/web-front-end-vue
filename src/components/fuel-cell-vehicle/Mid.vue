@@ -41,7 +41,8 @@ export default {
     async mounted() {
         this.carCount = await carCount();
         this.onlineCar = await onlineCarCount();
-    }
+    },
+
 }
 </script>
 

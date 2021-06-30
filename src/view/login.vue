@@ -2,12 +2,14 @@
   <scales>
     <div class="row box-bg">
       <h2 class="title-top text-center">
-        北 清 智 创 氢 能 与 燃 料 电 池 全 链 大 数 据 监 管 平 台
+        科 技 冬 奥 大 数 据 监 管 平 台
       </h2>
       <div class="col-12 logo">
         <img
-          src="../assets/img/ft-logo.png"
-          class="col-4 offset-4 img-responsive"
+          src="../assets/img/tsinghua-logo-2.png"
+          class="col-2 offset-5 img-responsive"
+          width="200"
+          height="140"
           alt=""
         />
       </div>
