@@ -19,8 +19,9 @@ Vue.prototype.websocket = websocket
 // http request 拦截器
 axios.interceptors.request.use(
     config => {
-        if (returnToken() !== null || returnToken() !== "") {  // 判断是否存在token，如果存在的话，则每个http header都加上token
-            config.headers['token'] = returnToken();
+        const token = returnToken();
+        if (token) {  // 存在有效的登录值时才附加请求头。
+            config.headers['token'] = token;
         }
         return config;
     },

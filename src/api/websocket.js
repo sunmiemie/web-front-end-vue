@@ -1,6 +1,10 @@
+import { returnToken } from './nevt';
+
 export default {
-    wsToken: localStorage.getItem('token') == null ? "e6854f1a74b94c7fa71343a06448c9aa" : localStorage.getItem('token'),
     ws: function (url) {
-        return new WebSocket(url, [this.wsToken])
+        // 创建连接时读取当前登录状态，避免复用旧凭据或漏掉会话登录。
+        const token = returnToken();
+        if (!token) throw new Error('请先登录后再建立实时连接');
+        return new WebSocket(url, [token]);
     },
 };
