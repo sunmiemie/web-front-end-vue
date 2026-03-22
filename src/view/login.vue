@@ -15,13 +15,15 @@
       </div>
       <div class="logo"></div>
       <div class="login-box">
-        <form class="form-horizontal">
+        <form class="form-horizontal" @submit.prevent="login">
           <div class="form-group">
             <div class="col-12">
               <input
                 type="text"
                 class="form-control input-height"
                 id="username"
+                autocomplete="username"
+                aria-label="账号"
                 placeholder="请输入账号"
               />
             </div>
@@ -32,6 +34,8 @@
                 type="password"
                 class="form-control input-height input-margin-top"
                 id="password"
+                autocomplete="current-password"
+                aria-label="密码"
                 placeholder="请输入密码"
               />
             </div>
@@ -50,8 +54,8 @@
             <div class="col-12 text-center">
               <button
                 id="loginSub"
-                type="button"
-                @click="login()"
+                type="submit"
+                :disabled="submitting || locked"
                 class="btn col-12 login-btn btn-success text-white"
               >
                 登 录
@@ -74,7 +78,7 @@ import Scales from "../components/public/Scales.vue";
 import TopNav from "../components/public/TopNav.vue";
 import $ from "jquery";
 import axios from "axios";
-import {base_api, failLogin, getFailLogin, getFail} from "../api/nevt.js";
+import {base_api, failLogin, getFailLogin, getFail, removeToken} from "../api/nevt.js";
 
 export default {
   components: {Scales, TopNav},
@@ -91,29 +95,52 @@ export default {
       },
       fail: false,
       failTxt: null,
+      submitting: false,
+      locked: false,
+      failTimer: null,
+      lockTimer: null,
     };
   },
   mounted() {
     getFailLogin(Date.now());
     this.loginBtn(getFail());
   },
+  beforeDestroy() {
+    clearTimeout(this.failTimer);
+    clearTimeout(this.lockTimer);
+  },
   methods: {
     login() {
-      this.loginBtn(getFail());
-      this.loginData.username = $("#username").val();
+      if (this.submitting) return;
+      const locked = getFail();
+      this.loginBtn(locked);
+      if (locked) return;
+      this.loginData.username = String($("#username").val() || '').trim();
       this.loginData.password = $("#password").val();
-      this.loginData.address.cityName = returnCitySN["cname"];
-      this.loginData.address.cityId = returnCitySN["cid"];
-      this.loginData.address.loginIP = returnCitySN["cip"];
+      if (!this.loginData.username || !this.loginData.password) {
+        this.failTxt = '请输入账号和密码';
+        this.fail = true;
+        return;
+      }
+      // IP 查询脚本不可用时仍允许登录，由服务端处理缺失的位置字段。
+      const address = typeof returnCitySN === 'object' && returnCitySN ? returnCitySN : {};
+      this.loginData.address.cityName = address.cname || null;
+      this.loginData.address.cityId = address.cid || null;
+      this.loginData.address.loginIP = address.cip || null;
       this.loginData.remember = $("#remember").prop("checked");
+      clearTimeout(this.failTimer);
+      this.fail = false;
+      this.submitting = true;
       const that = this;
-      axios({
+      return axios({
         method: "post",
         url: base_api + "/login",
         data: that.loginData,
       })
         .then((res) => {
           if (res.data.code === 201) {
+            // 清除另一种存储中的旧身份，避免新登录继续使用旧 token。
+            removeToken();
             if (that.loginData.remember) {
               localStorage.setItem("token", res.data.data.token);
               localStorage.setItem(
@@ -138,19 +165,28 @@ export default {
             that.$router.replace("/login");
             that.failTxt = res.data.message;
             that.fail = true;
-            setTimeout(() => {
+            that.failTimer = setTimeout(() => {
               that.fail = false;
             }, 5000);
           }
         })
-        .catch((err) => {
-          // console.log("err", err);
+        .catch(() => {
+          that.failTxt = '登录请求失败，请检查网络后重试';
+          that.fail = true;
+        })
+        .then(() => {
+          that.submitting = false;
+          that.loginBtn(getFail());
         });
     },
     loginBtn(bol) {
+      this.locked = bol;
+      clearTimeout(this.lockTimer);
       if (bol) {
         $("#loginSub").attr("disabled", true);
         $("#loginSub").text("登录错误过多!禁止登录!");
+        const remaining = Number(localStorage.getItem('fail-login-number')) - Date.now();
+        this.lockTimer = setTimeout(() => this.loginBtn(getFail()), Math.max(1, remaining));
       } else {
         $("#loginSub").attr("disabled", false);
         $("#loginSub").text("登录");
