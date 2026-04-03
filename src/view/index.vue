@@ -67,9 +67,7 @@ export default {
     },
     methods: {
         winResize() {
-            window.addEventListener("resize", () => {
-                this.getHeight();
-            });
+            window.addEventListener("resize", this.getHeight);
         },
         getHeight() {
             let w = 1920;
@@ -87,10 +85,11 @@ export default {
         },
         changeHight() {
             this.getHeight();
-            setTimeout(() => {
-                this.winResize();
-            }, 100);
+            this.winResize();
         },
+    },
+    beforeDestroy() {
+        window.removeEventListener("resize", this.getHeight);
     },
     async mounted () {
         const day = {
