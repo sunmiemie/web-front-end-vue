@@ -231,6 +231,7 @@ export default {
     data() {
         return {
             date: null,
+            clockTimer: null,
             alarmData: [],
             alarmShow: false,
             adminConfirm: false,
@@ -249,6 +250,13 @@ export default {
         this.timeRefresh();
         this.receive();
     },
+    beforeDestroy() {
+        clearInterval(this.clockTimer);
+        if (this.ws) {
+            this.ws.onmessage = null;
+            this.ws.close();
+        }
+    },
     methods: {
         navDate() {
             return new Date();
@@ -257,8 +265,9 @@ export default {
             this.minWindow = !this.minWindow;
         },
         timeRefresh() {
+            clearInterval(this.clockTimer);
             this.date = new Date().format("yyyy年MM月dd日 h:m:s");
-            setInterval(() => {
+            this.clockTimer = setInterval(() => {
                 this.date = new Date().format("yyyy年MM月dd日 h:m:s");
             }, 1000);
         },
