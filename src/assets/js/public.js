@@ -1,22 +1,17 @@
 var data_max = function (data) {
-    var max = 0;
-    for (var i = 0; i < data.length; i++) {
-        if (data[i] > max) {
-            max = data[i] + 5;
-        }
-    }
-    return parseInt(max);
+    // 先找真实最大值再增加留白，避免把留白参与下一轮比较。
+    var max = -Infinity;
+    data.forEach(function (item) {
+        if (item === null || item === '' || typeof item === 'boolean') return;
+        var value = Number(item);
+        if (Number.isFinite(value)) max = Math.max(max, value);
+    });
+    return Number.isFinite(max) ? Math.max(0, Math.ceil(max + 5)) : 0;
 }
 var data_max_list = function (list) {
-    var max = 0;
-    for (var i = 0; i < list.length; i++) {
-        for (var j = 0; j < list[i].length; j++) {
-            if (list[i][j] > max) {
-                max = list[i][j] + 5;
-            }
-        }
-    }
-    return parseInt(max);
+    return data_max(list.reduce(function (values, row) {
+        return values.concat(row);
+    }, []));
 }
 var date = function (type) {
     var yearList = [];
@@ -76,86 +71,44 @@ var car_palte = function (area) {
 }
 
 var x_date = function (type) {
-    var date = new Date();
-    var month = date.getMonth() + 1;
-    var year = date.getFullYear();
-    var days = new Date(year, month, date.getDate()).getDate();
-    var now_day = date.getDate();
-    var now_min = date.getMinutes();
-    var now_hour = date.getHours();
-    var now_second = date.getSeconds();
-    var dayList = [];
-    var monthList = [];
-    var weekList = [];
-    var hourList = []
-    var minList = [];
-    var secondList = [];
-    var unitList = ["月", "日", "年", "点", "分"];
+    var now = new Date();
+    var month = now.getMonth() + 1;
+    var labels = [];
+    var pad = function (value) { return value < 10 ? '0' + value : String(value); };
+    var i;
     switch (type) {
         case "month":
-            for (var i = 1; i <= month; i++) {
-                monthList.push(i + unitList[0]);
-            }
-            return monthList;
-        case "day":
-            for (var i = 1; i <= days; i++) {
-                dayList.push(month + unitList[0] + i + unitList[1]);
-            }
-            return dayList;
-        case "week":
-            for (var i = 7; i > 0; i--) {
-                weekList.push(month + unitList[0] + (now_day - i))
-            }
-            return weekList;
-        case "hour":
-            for (var i = 1; i <= 24; i++) {
-                hourList.push(i + unitList[3]);
-            }
-            return hourList;
-        case "min":
-            for (var i = 30; i > 0; i--) {
-                var temp = now_min;
-                if (temp + i < 10 || temp - i < 10) {
-                    temp = 0 + "" + now_min;
-                }
-                if (now_min - 30 < 0) {
-                    minList.push((now_hour - 1) + ":" + temp + i);
-                } else {
-                    minList.push(now_hour + ":" + (temp - i));
-                }
-            }
-            return minList;
-        case "second":
-            for (var i = 30; i > 0; i--) {
-                if (now_second - 30 < 0) {
-                    var temp_min = now_min - 1;
-                    var temp_second = now_second - i + 60;
-                    if (now_second - i + 60 > 60) {
-                        temp_min = now_min;
-                        temp_second = now_second - i;
-                    }
-                    if (temp_min - 1 < 0) {
-                        now_hour -= 1;
-                        if (now_hour - 1 < 0) {
-                            now_hour = 23;
-                        }
-                        temp_min = 59;
-                    }
-                    if (temp_min < 10) {
-                        temp_min = 0 + "" + temp_min;
-                    }
-                    if (temp_second < 10) {
-                        temp_second = 0 + "" + temp_second;
-                    }
-                    secondList.push(now_hour + ":" + temp_min + ":" + temp_second);
-                } else {
-                    secondList.push(now_hour + ":" + now_min + ":" + (now_second - i));
-                }
-            }
-            return secondList;
-        default:
+            for (i = 1; i <= month; i++) labels.push(i + "月");
             break;
+        case "day":
+            // 当前月已发生的日期，不借用下个月计算，避免月底发生日期溢出。
+            for (i = 1; i <= now.getDate(); i++) labels.push(month + "月" + i + "日");
+            break;
+        case "week":
+            for (i = 7; i > 0; i--) {
+                var day = new Date(now.getTime());
+                day.setDate(day.getDate() - i);
+                labels.push((day.getMonth() + 1) + "月" + day.getDate());
+            }
+            break;
+        case "hour":
+            for (i = 1; i <= 24; i++) labels.push(i + "点");
+            break;
+        case "min":
+        case "second":
+            // 用时间戳回退，统一处理跨小时、午夜和跨月边界。
+            var step = type === "min" ? 60000 : 1000;
+            for (i = 30; i > 0; i--) {
+                var point = new Date(now.getTime() - i * step);
+                var label = pad(point.getHours()) + ":" + pad(point.getMinutes());
+                if (type === "second") label += ":" + pad(point.getSeconds());
+                labels.push(label);
+            }
+            break;
+        default:
+            return undefined;
     }
+    return labels;
 }
 
 
