@@ -27,7 +27,7 @@ request({
 // 多车vin查询
 export const getByVins = (data) =>
 request({
-  url: '/openapi/iov/business/location/getByVins.json	',
+  url: '/openapi/iov/business/location/getByVins.json',
   method: 'post',
   data: data,
   params: data

@@ -16,6 +16,7 @@ service.interceptors.request.use(
     return config
   },
   (error) => {
+    return Promise.reject(error)
   }
 )
 
@@ -23,12 +24,13 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   (response) => {
     const res = response.data
-    if (res.type != "success") {
-      if (res.code === 50008 || res.code === 50012 || res.code === 50014) {
-      }
-    } else {
-      return response
+    if (!res || res.type !== "success") {
+      // 将业务失败交给调用方的 catch，避免以 undefined 伪装成功响应。
+      const error = new Error(res && (res.message || res.msg) || '车辆数据请求失败')
+      error.response = response
+      return Promise.reject(error)
     }
+    return response
   },
 )
 
