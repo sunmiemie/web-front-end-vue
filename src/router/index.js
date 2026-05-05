@@ -23,12 +23,22 @@ const HydrogenationHome = () => import('../view/hydrogenation-home')
 const HydrogenationHomeAll = () => import('../view/hydrogenation-home-all')
 
 const originalPush = Router.prototype.push
-Router.prototype.push = function push(location) {
-    return originalPush.call(this, location).catch(err => err)
+Router.prototype.push = function push(location, onComplete, onAbort) {
+    const result = originalPush.call(this, location, onComplete, onAbort)
+    if (onComplete || onAbort) return result
+    return result.catch(err => {
+        if (err.name === 'NavigationDuplicated') return err
+        return Promise.reject(err)
+    })
 }
 const VueRouterReplace = Router.prototype.replace
-Router.prototype.replace = function replace(to) {
-    return VueRouterReplace.call(this, to).catch(err => err)
+Router.prototype.replace = function replace(to, onComplete, onAbort) {
+    const result = VueRouterReplace.call(this, to, onComplete, onAbort)
+    if (onComplete || onAbort) return result
+    return result.catch(err => {
+        if (err.name === 'NavigationDuplicated') return err
+        return Promise.reject(err)
+    })
 }
 Vue.use(Router)
 const router = new Router({
