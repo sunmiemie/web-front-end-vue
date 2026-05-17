@@ -125,6 +125,7 @@
             <div v-if="carrierShow">
                 <bml-marker-clusterer :averageCenter="true">
                     <bm-marker
+                        v-for="carrier in carrierAddr"
                         :key="carrier.id"
                         :position="{
                         lng: carrier.longitude,
@@ -427,8 +428,8 @@ export default {
     },
     props: ["mapHeight", "dShow", "carShow", "carrierShow"],
     async mounted() {
-        this.onlineCarList = await allOfflineCar();
-        this.offlineCarList = await allOnlineCar();
+        this.onlineCarList = (await allOnlineCar()) || [];
+        this.offlineCarList = (await allOfflineCar()) || [];
         this.factoryAddr = await allFactoryAddr();
         this.stationAddr = await allStationAddr();
         this.carrierAddr = await allCarrierAddr();
