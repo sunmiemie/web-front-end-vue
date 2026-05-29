@@ -469,33 +469,18 @@ export default {
             }
         },
         changePathColor(flag) {
-            if (flag) {
-                this.changeEndAndStartIcon(flag);
-                const length = $("[stroke-linejoin]").length;
-                // console.log(length);
-                let index = 0;
-                for (let i = 0; i < length; i++) {
-                    $("[stroke-linejoin]:nth-child(" + (i + 1) + ")").attr({
-                        "stroke-opacity": "0.7",
-                        stroke: pathColor[index],
-                    });
-                    index = index > length ? 0 : ++index;
-                }
-            }
+            if (!flag) return;
+            this.changeEndAndStartIcon(flag);
+            $(this.$el).find("[stroke-linejoin]").each((index, path) => {
+                $(path).attr({ "stroke-opacity": "0.7", stroke: pathColor[index % pathColor.length] });
+            });
         },
         changeEndAndStartIcon(show) {
-            const length = $(".BMap_Marker img").length;
-            for (let i = 0; i < length; i++) {
-                const flag = $(".BMap_Marker:nth-child(" + (i + 1) + ") img")
-                    .attr("src")
-                    .indexOf("http");
-                if (flag === 0 && show) {
-                    $(".BMap_Marker:nth-child(" + (i + 1) + ")").css(
-                        "z-index",
-                        "10000"
-                    );
-                }
-            }
+            if (!show) return;
+            $(this.$el).find(".BMap_Marker img").each((index, image) => {
+                const src = $(image).attr("src") || "";
+                if (src.indexOf("http") === 0) $(image).closest(".BMap_Marker").css("z-index", "10000");
+            });
         },
         randomPoints(max, min) {
             return Math.random() * (max - min) + min;
