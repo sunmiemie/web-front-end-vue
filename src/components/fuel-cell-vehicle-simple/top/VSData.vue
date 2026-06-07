@@ -31,10 +31,10 @@
                     </div>
                 </div>
                 <div class="col-2 border-aqua">
-                    <div>当前电机功率</div>
+                    <div>当前FC功率</div>
                     <div>
-                        <span class="text-g-number">{{ VSData.fcCurrent * VSData.fcVoltage }}</span
-                        >KW
+                        <span class="text-g-number">{{ powerKw }}</span
+                        >kW
                     </div>
                 </div>
                 <div class="col-2 border-aqua">
@@ -48,7 +48,14 @@
 
 <script>
 export default {
-    props: ["VSData"],
+    props: { VSData: { type: Object, default: () => ({}) } },
+    computed: {
+        powerKw() {
+            const values = [this.VSData.fcCurrent, this.VSData.fcVoltage];
+            if (values.some(value => value === null || value === undefined || value === '' || !Number.isFinite(Number(value)))) return '-';
+            return Number((Number(values[0]) * Number(values[1]) / 1000).toFixed(2));
+        },
+    },
     data() {
         return {
             itervalId: null,
