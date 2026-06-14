@@ -95,7 +95,8 @@ export default {
         receive() {
             var that = this;
             that.ws.onmessage = function (data) {
-                let value = jsonFormat(data);
+                const value = jsonFormat(data);
+                if (!value || !value.data || !value.data.content || typeof value.data.content !== "object" || Array.isArray(value.data.content)) return;
                 that.dataBottom = value.data.content;
             };
         },

@@ -41,7 +41,12 @@ const allValues = function () {
 };
 
 const jsonFormat = function (data) {
-    return JSON.parse(data.data);
+    try {
+        const value = JSON.parse(data.data);
+        return value && typeof value === 'object' && !Array.isArray(value) ? value : null;
+    } catch (_) {
+        return null;
+    }
 };
 
 const getUrlKey = function (param) {

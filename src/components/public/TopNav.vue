@@ -274,7 +274,8 @@ export default {
         receive() {
             var that = this;
             that.ws.onmessage = function (data) {
-                let value = jsonFormat(data);
+                const value = jsonFormat(data);
+                if (!value || !Array.isArray(value.data)) return;
                 for (var i = 0; i < value.data.length; i++) {
                     that.alarmData[i] = value.data[i];
                     if (value.data[i].dataStationId == 0) {
