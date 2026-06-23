@@ -276,14 +276,8 @@ export default {
             that.ws.onmessage = function (data) {
                 const value = jsonFormat(data);
                 if (!value || !Array.isArray(value.data)) return;
-                for (var i = 0; i < value.data.length; i++) {
-                    that.alarmData[i] = value.data[i];
-                    if (value.data[i].dataStationId == 0) {
-                        that.alarmShow = false;
-                    } else {
-                        that.alarmShow = true;
-                    }
-                }
+                that.alarmData = value.data.filter(alarm => alarm && alarm.dataStationId != null && alarm.dataStationId != 0 && alarm.content && typeof alarm.content === "object");
+                that.alarmShow = that.alarmData.length > 0;
             };
         },
         handlerAlarm(dataStationId, dataStationTypeId) {
