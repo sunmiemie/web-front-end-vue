@@ -283,9 +283,6 @@ export default {
     created() {
         this.initWs();
     },
-    destroyed() {
-        this.ws.close();
-    },
     data() {
         return {
             carId: null,
@@ -308,7 +305,6 @@ export default {
         VSMTwoTable,
     },
     async mounted() {
-        this.receive();
         this.carId = getUrlKey("carId");
         const data = {
             dataStationId: this.carId,
@@ -316,6 +312,13 @@ export default {
         this.vin = await vinByDataStationId(data);
     },
     methods: {
+        closeSocket() {
+            if (!this.ws) return;
+            this.ws.onmessage = null;
+            this.ws.onopen = null;
+            this.ws.close();
+            this.ws = null;
+        },
         toFCInfo(param) {
             this.$router.push({
                 path: "/fuel-cell-vehicle/fuel-cell-vehicle-simple/fc-info",
@@ -328,6 +331,7 @@ export default {
                 getUrlKey("carId")
             );
             this.ws = this.websocket.ws(result);
+            this.receive();
         },
         receive() {
             const that = this;
@@ -340,6 +344,7 @@ export default {
         },
     },
     beforeDestroy() {
+        this.closeSocket();
         clearInterval(this.itervalId);
     },
 };

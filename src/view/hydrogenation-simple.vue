@@ -34,8 +34,8 @@ export default {
     created() {
         this.initWs();
     },
-    destroyed() {
-        this.ws.close();
+    beforeDestroy() {
+        this.closeSocket();
     },
     data() {
         return {
@@ -82,15 +82,22 @@ export default {
         this.addData.addMonth = await statisticalAdd(month);
         this.addData.addYear = await statisticalAdd(year);
         this.addData.alarm = await statisticalAlarm(alarmYear);
-        this.receive();
     },
     methods: {
+        closeSocket() {
+            if (!this.ws) return;
+            this.ws.onmessage = null;
+            this.ws.onopen = null;
+            this.ws.close();
+            this.ws = null;
+        },
         initWs() {
             var result = allValues(
                 data_station_type.station,
                 getUrlKey("id")
             );
             this.ws = this.websocket.ws(result);
+            this.receive();
         },
         receive() {
             var that = this;

@@ -152,8 +152,8 @@ export default {
     created() {
         this.initWs();
     },
-    destroyed() {
-        this.ws.close();
+    beforeDestroy() {
+        this.closeSocket();
     },
     data() {
         return {
@@ -173,15 +173,22 @@ export default {
     },
     async mounted() {
         this.carrierId = getUrlKey("carrierId");
-        this.receive();
     },
     methods: {
+        closeSocket() {
+            if (!this.ws) return;
+            this.ws.onmessage = null;
+            this.ws.onopen = null;
+            this.ws.close();
+            this.ws = null;
+        },
         initWs() {
             const result = allValues(
                 data_station_type.carrier,
                 getUrlKey("carrierId")
             );
             this.ws = this.websocket.ws(result);
+            this.receive();
         },
         receive() {
             const that = this;

@@ -288,6 +288,11 @@ import {
 export default {
     created() {
         this.ws = this.websocket.ws(testUrl);
+        this.sendParam();
+        this.receive();
+    },
+    beforeDestroy() {
+        this.closeSocket();
     },
     data() {
         return {
@@ -307,10 +312,15 @@ export default {
     },
     props: ["stationName"],
     mounted() {
-        this.sendParam();
-        this.receive();
     },
     methods: {
+        closeSocket() {
+            if (!this.ws) return;
+            this.ws.onmessage = null;
+            this.ws.onopen = null;
+            this.ws.close();
+            this.ws = null;
+        },
         addSixHPhoto: function () {
             this.sixHShow = !this.sixHShow;
         },
@@ -336,9 +346,6 @@ export default {
                 that.paramValue = value.data.content;
             };
         },
-    },
-    destroyed() {
-        this.ws.close();
     },
 };
 </script>

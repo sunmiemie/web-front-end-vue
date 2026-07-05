@@ -530,8 +530,8 @@ export default {
         this.initWs();
         // this.fcInfo = fcInfoJson["data"];
     },
-    destroyed() {
-        this.ws.close();
+    beforeDestroy() {
+        this.closeSocket();
     },
     data() {
         return {
@@ -557,7 +557,6 @@ export default {
         InfoTitle,
     },
     async mounted() {
-        this.receive();
         this.carId = this.getUrlKey("carId");
         const data = {
             dataStationId: this.carId,
@@ -565,6 +564,13 @@ export default {
         this.vin = await vinByDataStationId(data);
     },
     methods: {
+        closeSocket() {
+            if (!this.ws) return;
+            this.ws.onmessage = null;
+            this.ws.onopen = null;
+            this.ws.close();
+            this.ws = null;
+        },
         getUrlKey(carId) {
             var result =
                 decodeURIComponent(
@@ -583,6 +589,7 @@ export default {
                 getUrlKey("carId")
             );
             this.ws = this.websocket.ws(result);
+            this.receive();
         },
         receive() {
             var that = this;
