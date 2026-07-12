@@ -3,9 +3,11 @@
 </template>
 
 <script>
+import chartLifecycle from "../../public/chart-lifecycle.js";
 import { eb_line,data_time } from "../../../assets/js/table.js";
 import { data_max_list,x_date } from "../../../assets/js/public.js";
 export default {
+    mixins: [chartLifecycle],
     name: "e-add-h-day-car",
     data() {
         return {};
@@ -15,13 +17,8 @@ export default {
     },
     methods: {
         drawLine() {
-            let dayHCarP = this.$echarts.init(document.getElementById("dayHCarP"));
+            let dayHCarP = this.createChart("dayHCarP");
             eb_line(dataList,colorList,titleList,unitList,xArray,maxList,dayHCarP,false);
-            setTimeout(function () {
-                window.onresize = function () {
-                    dayHCarP.resize();
-                };
-            }, 200);
         },
     },
 };

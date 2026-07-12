@@ -3,9 +3,11 @@
 </template>
 
 <script>
+import chartLifecycle from "../public/chart-lifecycle.js";
 import { eb_f } from "../../assets/js/table.js";
 import { data_calculation,x_date,data_max } from "../../assets/js/public.js";
 export default {
+    mixins: [chartLifecycle],
     name: "e-one",
     data() {
         return {};
@@ -15,13 +17,8 @@ export default {
     },
     methods: {
         drawLine() {
-            let yearTransport = this.$echarts.init(document.getElementById("yearTransport"));
+            let yearTransport = this.createChart("yearTransport");
             eb_f(dataList,colorList, titleList,unitList,xArary,max, yearTransport, false,false);
-            setTimeout(function () {
-                window.onresize = function () {
-                    yearTransport.resize();
-                };
-            }, 200);
         },
     },
 };

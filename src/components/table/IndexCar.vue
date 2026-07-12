@@ -3,8 +3,10 @@
 </template>
 
 <script>
+import chartLifecycle from "../public/chart-lifecycle.js";
 import { index_car } from "../../assets/js/table.js";
 export default {
+    mixins: [chartLifecycle],
     name: "e-one",
     data() {
         return {};
@@ -14,13 +16,8 @@ export default {
     },
     methods: {
         drawLine() {
-            let car = this.$echarts.init(document.getElementById("car"));
+            let car = this.createChart("car");
             index_car(car,colorList,nameList,valueList,true,"kg");
-            setTimeout(function () {
-                window.onresize = function () {
-                    car.resize();
-                };
-            }, 200);
         },
     },
 };

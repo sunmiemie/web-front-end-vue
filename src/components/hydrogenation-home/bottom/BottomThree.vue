@@ -6,22 +6,19 @@
 </template>
 
 <script>
+import chartLifecycle from "../../public/chart-lifecycle.js";
 import { eb_line } from "../../../assets/js/table.js";
 import { data_max_list,x_date,data_calculation } from "../../../assets/js/public.js";
 export default {
+    mixins: [chartLifecycle],
     components: { },
     mounted() {
         this.drawLine();
     },
     methods: {
         drawLine() {
-           let hundredH = this.$echarts.init(document.getElementById("hundredH"));
+           let hundredH = this.createChart("hundredH");
            eb_line(dataList,colorList,titleList,unitList,xArray,max,hundredH,false);
-            setTimeout(function () {
-                window.onresize = function () {
-                    hundredH.resize();
-                };
-            }, 200);
         },
     },
 }

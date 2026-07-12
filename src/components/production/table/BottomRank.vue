@@ -6,21 +6,18 @@
 </template>
 
 <script>
+import chartLifecycle from "../../public/chart-lifecycle.js";
 import { ranking } from "../../../assets/js/table.js";
 export default {
+    mixins: [chartLifecycle],
     components: { },
     mounted() {
         this.drawLine();
     },
     methods: {
         drawLine() {
-            let rankP = this.$echarts.init(document.getElementById("rankP"));
+            let rankP = this.createChart("rankP");
             ranking(rankP,dataList,nameList,colorList,"kg");
-            setTimeout(function () {
-                window.onresize = function () {
-                    rankP.resize();
-                };
-            }, 200);
         },
     },
 }

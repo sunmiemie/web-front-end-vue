@@ -3,9 +3,11 @@
 </template>
 
 <script>
+import chartLifecycle from "../../public/chart-lifecycle.js";
 import { eb_line,data_time, eb_line_double } from "../../../assets/js/table.js";
 import { data_max_list,data_calculation,x_date } from "../../../assets/js/public.js";
 export default {
+    mixins: [chartLifecycle],
     name: "e-add-h-day-car",
     data() {
         return {};
@@ -15,13 +17,8 @@ export default {
     },
     methods: {
         drawLine() {
-            let vPower = this.$echarts.init(document.getElementById("vPower"));
+            let vPower = this.createChart("vPower");
             eb_line_double(dataList,colorList,titleList,unitList,xArray,max,vPower,false);
-            setTimeout(function () {
-                window.onresize = function () {
-                    vPower.resize();
-                };
-            }, 200);
         },
     },
 };

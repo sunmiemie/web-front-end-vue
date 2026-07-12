@@ -3,9 +3,11 @@
 </template>
 
 <script>
+import chartLifecycle from "../public/chart-lifecycle.js";
 import { eb_bar_double } from "../../assets/js/table.js";
 import { data_calculation,x_date,data_max } from "../../assets/js/public.js";
 export default {
+    mixins: [chartLifecycle],
     name: "e-one",
     data() {
         return {};
@@ -15,14 +17,9 @@ export default {
     },
     methods: {
         drawLine() {
-            let one = this.$echarts.init(document.getElementById("one"));
+            let one = this.createChart("one");
             //(dataList, colorList, titleList, unitList, xArary, max, el, zomFlag
             eb_bar_double(dataList, colorList, titleList, unitList, xArary, max, one , false, false);
-            setTimeout(function () {
-                window.onresize = function () {
-                    one.resize();
-                };
-            }, 200);
         },
     },
 };

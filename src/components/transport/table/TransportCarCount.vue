@@ -12,9 +12,11 @@
 </template>
 
 <script>
+import chartLifecycle from "../../public/chart-lifecycle.js";
 import { eb_line,data_time,eb_f } from "../../../assets/js/table.js";
 import { data_calculation,x_date,data_max } from "../../../assets/js/public.js";
 export default {
+    mixins: [chartLifecycle],
     data() {
         return {};
     },
@@ -23,23 +25,15 @@ export default {
     },
     methods: {
         drawLine() {
-            let carCount = this.$echarts.init(document.getElementById("carCount"));
-            let carCountDay = this.$echarts.init(document.getElementById("carCountDay"));
-            let carNumberDay = this.$echarts.init(document.getElementById("carNumberDay"));
-            let carDistanceDay = this.$echarts.init(document.getElementById("carDistanceDay"));
+            let carCount = this.createChart("carCount");
+            let carCountDay = this.createChart("carCountDay");
+            let carNumberDay = this.createChart("carNumberDay");
+            let carDistanceDay = this.createChart("carDistanceDay");
             //dataList, colorList, titleList, unitList, xArary, max, el, zomFlag, flag
             eb_f(dataList_1,colorList_1,titleList_1,unitList_1,day,max_1, carNumberDay, false,false);
             eb_f(dataList_2,colorList_2,titleList_1,unitList_2,day,max_2, carDistanceDay, false,false);
             eb_line(dataList_3,colorList_3,titleList_2, unitList_3,month,max_3,carCount,false);
             eb_line(dataList_4,colorList_1,titleList_1, unitList_4,day,max_4,carCountDay,false);
-            setTimeout(function () {
-                window.onresize = function () {
-                    carCount.resize();
-                    carCountDay.resize();
-                    carNumberDay.resize();
-                    carDistanceDay.resize();
-                };
-            }, 200);
         },
     },
 };

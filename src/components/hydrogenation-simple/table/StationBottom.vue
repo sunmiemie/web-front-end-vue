@@ -5,8 +5,10 @@
 </template>
 
 <script>
+import chartLifecycle from "../../public/chart-lifecycle.js";
 import { eb_f_line } from "../../../assets/js/table.js";
 export default {
+    mixins: [chartLifecycle],
     data() {
         return {};
     },
@@ -15,9 +17,7 @@ export default {
     },
     methods: {
         drawLine() {
-            let stationBottom = this.$echarts.init(
-                document.getElementById("stationBottom")
-            );
+            let stationBottom = this.createChart("stationBottom");
             eb_f_line(
                 data1,
                 data2,
@@ -29,11 +29,6 @@ export default {
                 typeList,
                 ["时间(24小时)","压力/Mpa"]
             );
-            setTimeout(function () {
-                window.onresize = function () {
-                    stationBottom.resize();
-                };
-            }, 200);
         },
     },
 };

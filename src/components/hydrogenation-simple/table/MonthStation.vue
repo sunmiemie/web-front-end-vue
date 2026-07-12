@@ -7,9 +7,11 @@
 </template>
 
 <script>
+import chartLifecycle from "../../public/chart-lifecycle.js";
 import { eb_f } from "../../../assets/js/table.js";
 import { data_calculation,x_date,data_max } from "../../../assets/js/public.js";
 export default {
+    mixins: [chartLifecycle],
     data() {
         return {};
     },
@@ -18,13 +20,8 @@ export default {
     },
     methods: {
         drawLine() {
-            let monthStation = this.$echarts.init(document.getElementById("monthStation"));
+            let monthStation = this.createChart("monthStation");
             eb_f(dataList,colorList, titleList,unitList,xArary,max, monthStation, false,false);
-            setTimeout(function () {
-                window.onresize = function () {
-                    monthStation.resize();
-                };
-            }, 200);
         },
     },
 };

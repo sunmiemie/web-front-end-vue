@@ -6,9 +6,11 @@
 </template>
 
 <script>
+import chartLifecycle from "../../public/chart-lifecycle.js";
 import { eb_f } from "../../../assets/js/table.js";
 import { data_calculation,x_date,data_max } from "../../../assets/js/public.js";
 export default {
+    mixins: [chartLifecycle],
     data() {
         return {};
     },
@@ -17,13 +19,8 @@ export default {
     },
     methods: {
         drawLine() {
-            let stationTop = this.$echarts.init(document.getElementById("stationTop"));
+            let stationTop = this.createChart("stationTop");
             eb_f(dataList,colorList,titleList,unitList,xArary,max, stationTop, false,false);
-            setTimeout(function () {
-                window.onresize = function () {
-                    stationTop.resize();
-                };
-            }, 200);
         },
     },
 };

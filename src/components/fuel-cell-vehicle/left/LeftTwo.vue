@@ -3,9 +3,11 @@
 </template>
 
 <script>
+import chartLifecycle from "../../public/chart-lifecycle.js";
 import { eb_line } from "../../../assets/js/table.js";
 import { data_max_list, x_date, data_calculation } from "../../../assets/js/public.js";
 export default {
+    mixins: [chartLifecycle],
     components: {},
     data() {
         return {
@@ -16,15 +18,8 @@ export default {
     },
     methods: {
         drawLine() {
-            let cMonthLeftTwo = this.$echarts.init(
-                document.getElementById("cMonthLeftTwo")
-            );
+            let cMonthLeftTwo = this.createChart("cMonthLeftTwo");
             eb_line(dataList,colorList,titleList,unitList,xArray,max,cMonthLeftTwo,false);
-            this.timer = setTimeout(function () {
-                window.onresize = function () {
-                    cMonthLeftTwo.resize();
-                };
-            }, 200);
         },
     },
 };

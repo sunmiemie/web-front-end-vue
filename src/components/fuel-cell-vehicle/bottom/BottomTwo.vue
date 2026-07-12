@@ -6,10 +6,12 @@
 </template>
 
 <script>
+import chartLifecycle from "../../public/chart-lifecycle.js";
 import { eb_line } from "../../../assets/js/table.js";
 import { data_max_list,x_date } from "../../../assets/js/public.js";
 import { statisticalAlarm, statisticalAddList } from "../../../api/tisinghua-static";
 export default {
+    mixins: [chartLifecycle],
     components: { },
     data(){
         return {
@@ -26,13 +28,8 @@ export default {
     },
     methods: {
         drawLine() {
-           let bottomWarn = this.$echarts.init(document.getElementById("bottomWarn"));
+           let bottomWarn = this.createChart("bottomWarn");
            eb_line(dataList,colorList,titleList,unitList,xArray,max,bottomWarn,false);
-            setTimeout(function () {
-                window.onresize = function () {
-                    bottomWarn.resize();
-                };
-            }, 200);
         },
     },
 }

@@ -3,9 +3,11 @@
 </template>
 
 <script>
+import chartLifecycle from "../../public/chart-lifecycle.js";
 import { eb_f } from "../../../assets/js/table.js";
 import { data_max,x_date,data_calculation } from "../../../assets/js/public.js";
 export default {
+    mixins: [chartLifecycle],
     name: "e-one",
     data() {
         return {};
@@ -15,13 +17,8 @@ export default {
     },
     methods: {
         drawLine() {
-            let monthHTableP = this.$echarts.init(document.getElementById("monthHTableP"));
+            let monthHTableP = this.createChart("monthHTableP");
             eb_f(dataList,colorList,titleList,unitList,month,max, monthHTableP, false,false);
-            setTimeout(function () {
-                window.onresize = function () {
-                    monthHTableP.resize();
-                };
-            }, 200);
         },
     },
 };

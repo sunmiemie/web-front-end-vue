@@ -6,9 +6,11 @@
 </template>
 
 <script>
+import chartLifecycle from "../../public/chart-lifecycle.js";
 import { eb_line } from "../../../assets/js/table.js";
 import { data_max_list, x_date, data_calculation } from "../../../assets/js/public.js";
 export default {
+    mixins: [chartLifecycle],
     components: {},
     mounted() {
         this.drawLine();
@@ -16,15 +18,8 @@ export default {
     methods: {
         drawLine() {
             var data = data_calculation(31, 1000, 500);
-            let vCarbon = this.$echarts.init(
-                document.getElementById("vCarbon")
-            );
+            let vCarbon = this.createChart("vCarbon");
             eb_line(dataList,colorList,titleList,unitList,xArray,max,vCarbon,false);
-            setTimeout(function () {
-                window.onresize = function () {
-                    vCarbon.resize();
-                };
-            }, 200);
         },
     },
 };

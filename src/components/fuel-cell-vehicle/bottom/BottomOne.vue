@@ -6,8 +6,10 @@
 </template>
 
 <script>
+import chartLifecycle from "../../public/chart-lifecycle.js";
 import { index_car } from "../../../assets/js/table.js";
 export default {
+    mixins: [chartLifecycle],
     name: "e-one",
     data() {
         return {};
@@ -17,20 +19,10 @@ export default {
     },
     methods: {
         drawLine() {
-            let vLoopTable = this.$echarts.init(
-                document.getElementById("vLoopTable")
-            );
-            let vLoopTable_2 = this.$echarts.init(
-                document.getElementById("vLoopTable_2")
-            );
+            let vLoopTable = this.createChart("vLoopTable");
+            let vLoopTable_2 = this.createChart("vLoopTable_2");
             index_car(vLoopTable, colorList, nameList, valueList,false,"辆");
             index_car(vLoopTable_2, areaColorList, areaList, areaValueList,false,"辆");
-            setTimeout(function () {
-                window.onresize = function () {
-                    vLoopTable.resize();
-                    vLoopTable_2.resize();
-                };
-            }, 200);
         },
     },
 };

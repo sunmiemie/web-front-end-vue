@@ -5,9 +5,11 @@
 </template>
 
 <script>
+import chartLifecycle from "../../public/chart-lifecycle.js";
 import { eb_line,data_time} from "../../../assets/js/table.js";
 import { data_calculation,data_max_list,x_date} from "../../../assets/js/public.js";
 export default {
+    mixins: [chartLifecycle],
     data() {
         return {};
     },
@@ -16,13 +18,8 @@ export default {
     },
     methods: {
         drawLine() {
-            let carTimeDay = this.$echarts.init(document.getElementById("carTimeDay"));
+            let carTimeDay = this.createChart("carTimeDay");
             eb_line(dataList,colorList,titleList,unitList,xArray,maxList,carTimeDay,false);
-            setTimeout(function () {
-                window.onresize = function () {
-                    carTimeDay.resize();
-                };
-            }, 200);
         },
     },
 };

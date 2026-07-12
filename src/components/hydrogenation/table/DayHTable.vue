@@ -3,9 +3,11 @@
 </template>
 
 <script>
+import chartLifecycle from "../../public/chart-lifecycle.js";
 import { eb_f } from "../../../assets/js/table.js";
 import { data_max,x_date } from "../../../assets/js/public.js";
 export default {
+    mixins: [chartLifecycle],
     name: "e-add-h-day",
     data() {
         return {};
@@ -15,13 +17,8 @@ export default {
     },
     methods: {
         drawLine() {
-            let dayHTable = this.$echarts.init(document.getElementById("dayHTable"));
+            let dayHTable = this.createChart("dayHTable");
             eb_f(dataList,colorList,titleList,unitList,day,max,dayHTable, false,false);
-            setTimeout(function () {
-                window.onresize = function () {
-                    dayHTable.resize();
-                };
-            }, 200);
         },
     },
 };
