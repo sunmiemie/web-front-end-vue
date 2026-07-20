@@ -540,9 +540,9 @@ export default {
             vin: null,
             ws: null,
             fcInfo: null,
-            dataTop: null,
-            dataMid: null,
-            dataRight: null,
+            dataTop: {},
+            dataMid: {},
+            dataRight: {},
         };
     },
     components: {
