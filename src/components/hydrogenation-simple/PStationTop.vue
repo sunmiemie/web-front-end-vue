@@ -4,15 +4,15 @@
             <div class="row text-center top-height text-shadow">
                 <div class="col-2 border-aqua">
                     <div>当日加氢量</div>
-                    <div><span class="text-g-number">{{ addData.addDay.data}}</span>KG</div>
+                    <div><span class="text-g-number">{{ addData.addDay.data == null ? "-" : addData.addDay.data }}</span>KG</div>
                 </div>
                 <div class="col-2 border-aqua">
                     <div>当月加氢量</div>
-                    <div><span class="text-g-number">{{ addData.addMonth.data}}</span>KG</div>
+                    <div><span class="text-g-number">{{ addData.addMonth.data == null ? "-" : addData.addMonth.data }}</span>KG</div>
                 </div>
                 <div class="col-2 border-aqua">
                     <div>累计加氢量</div>
-                    <div><span class="text-g-number">{{ addData.addYear.data}}</span>KG</div>
+                    <div><span class="text-g-number">{{ addData.addYear.data == null ? "-" : addData.addYear.data }}</span>KG</div>
                 </div>
                 <div class="col-2 border-aqua">
                     <div>今日加氢次数</div>

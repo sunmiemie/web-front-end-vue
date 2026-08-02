@@ -43,10 +43,10 @@ export default {
             stationId: null,
             stationName: null,
             addData: {
-                addDay: 0,
-                addMonth: 0,
-                addYear: 0,
-                alarm: 0,
+                addDay: { data: null },
+                addMonth: { data: null },
+                addYear: { data: null },
+                alarm: { data: null },
             },
             dataBottom: {}
         };
@@ -78,10 +78,20 @@ export default {
              dataStationId: this.stationId,
             date: "year"
         }
-        this.addData.addDay = await statisticalAdd(day);
-        this.addData.addMonth = await statisticalAdd(month);
-        this.addData.addYear = await statisticalAdd(year);
-        this.addData.alarm = await statisticalAlarm(alarmYear);
+        const requests = [
+            ["addDay", () => statisticalAdd(day)],
+            ["addMonth", () => statisticalAdd(month)],
+            ["addYear", () => statisticalAdd(year)],
+            ["alarm", () => statisticalAlarm(alarmYear)],
+        ];
+        await Promise.all(requests.map(async ([key, request]) => {
+            try {
+                const value = await request();
+                if (!this._isDestroyed) this.addData[key] = value && typeof value === "object" ? value : { data: value == null ? null : value };
+            } catch (_) {
+                // 单项统计失败不阻断其他统计和实时遥测。
+            }
+        }));
     },
     methods: {
         closeSocket() {
