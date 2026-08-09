@@ -14,6 +14,7 @@
 </template>
 
 <script>
+import { getUrlKey } from "../api/util";
 import CACTitle from "../components/hydrogenation-simple/can-and-compressor/CACTitle.vue";
 import Can from '../components/hydrogenation-simple/can-and-compressor/Can.vue';
 import Compressor from '../components/hydrogenation-simple/can-and-compressor/Compressor.vue';
@@ -31,16 +32,8 @@ export default {
     },
     methods: {
         getUrlKey(name) {
-            var result =
-                decodeURIComponent(
-                    (new RegExp(
-                        "[?|&]" + name + "=" + "([^&;]+?)(&|#|;|$)"
-                    ).exec(location.href) || [, ""])[1].replace(/\+/g, "%20")
-                ) || null;
-            if (result == null) {
-                return "获取失败";
-            }
-            return result;
+            const value = getUrlKey(name);
+            return value === 404 ? "获取失败" : value;
         },
     },
 };

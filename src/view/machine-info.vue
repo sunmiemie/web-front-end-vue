@@ -10,6 +10,7 @@
 </template>
 
 <script>
+import { getUrlKey } from "../api/util";
 import MLeft from "../components/hydrogenation-simple/Hydrogenation-machine/MLeft.vue";
 import MMid from "../components/hydrogenation-simple/Hydrogenation-machine/MMid.vue";
 import MRight from "../components/hydrogenation-simple/Hydrogenation-machine/MRight.vue";
@@ -27,16 +28,8 @@ export default {
     },
     methods: {
         getUrlKey(name) {
-            var result =
-                decodeURIComponent(
-                    (new RegExp(
-                        "[?|&]" + name + "=" + "([^&;]+?)(&|#|;|$)"
-                    ).exec(location.href) || [, ""])[1].replace(/\+/g, "%20")
-                ) || null;
-            if (result == null) {
-                return "获取失败";
-            }
-            return result;
+            const value = getUrlKey(name);
+            return value === 404 ? "获取失败" : value;
         },
     },
 };

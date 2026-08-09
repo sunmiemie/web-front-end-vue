@@ -571,17 +571,9 @@ export default {
             this.ws.close();
             this.ws = null;
         },
-        getUrlKey(carId) {
-            var result =
-                decodeURIComponent(
-                    (new RegExp(
-                        "[?|&]" + carId + "=" + "([^&;]+?)(&|#|;|$)"
-                    ).exec(location.href) || [, ""])[1].replace(/\+/g, "%20")
-                ) || null;
-            if (result == null) {
-                return 404;
-            }
-            return result;
+        getUrlKey(name) {
+            const value = getUrlKey(name);
+            return value === 404 ? 404 : value;
         },
         initWs() {
             var result = allValues(
