@@ -107,8 +107,8 @@ var eb_f = function (dataList, colorList, titleList, unitList, xArary, max, el, 
             {
                 type: 'inside',
                 realtime: true,
-                start: 50,
-                end: 100,
+                start: 0,
+                end: end,
                 textStyle: {
                     color: '#fff'
                 }
@@ -250,8 +250,8 @@ var eb_bar_double = function (dataList, colorList, titleList, unitList, xArray, 
             {
                 type: 'inside',
                 realtime: true,
-                start: 50,
-                end: 100,
+                start: 0,
+                end: 50,
                 textStyle: {
                     color: '#fff'
                 }
@@ -422,8 +422,8 @@ var eb_line_double = function (dataList, colorList, titleList, unitList, xArray,
             {
                 type: 'inside',
                 realtime: true,
-                start: 50,
-                end: 100,
+                start: 0,
+                end: 50,
                 textStyle: {
                     color: '#fff'
                 }
@@ -570,7 +570,7 @@ var eb_line = function (dataList, colorList, titleList, unitList, xArray, max, e
             {
                 type: 'inside',
                 realtime: true,
-                start: 50,
+                start: 0,
                 end: 100,
                 textStyle: {
                     color: '#fff'
@@ -1210,8 +1210,8 @@ var eb_f_line = function (data1, data2, colorList, nameList, el, flag, max, type
             {
                 type: 'inside',
                 realtime: true,
-                start: 50,
-                end: 100,
+                start: 0,
+                end: 50,
                 textStyle: {
                     color: '#fff'
                 }
