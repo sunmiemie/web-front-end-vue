@@ -134,6 +134,7 @@ var eb_f = function (dataList, colorList, titleList, unitList, xArary, max, el, 
             }
         ]
     }
+    option.series = option.series.filter((series, index) => Array.isArray(dataList[index]));
     el.setOption(option, true);
 };
 var eb_bar_double = function (dataList, colorList, titleList, unitList, xArray, maxList, el, flag, y2) {
@@ -306,6 +307,7 @@ var eb_bar_double = function (dataList, colorList, titleList, unitList, xArray, 
 
         ]
     }
+    option.series = option.series.filter((series, index) => Array.isArray(dataList[index]));
     el.setOption(option, true);
 };
 var eb_line_double = function (dataList, colorList, titleList, unitList, xArray, maxList, el, flag, y2) {
@@ -478,6 +480,7 @@ var eb_line_double = function (dataList, colorList, titleList, unitList, xArray,
 
         ]
     }
+    option.series = option.series.filter((series, index) => Array.isArray(dataList[index]));
     el.setOption(option, true);
 };
 var eb_line = function (dataList, colorList, titleList, unitList, xArray, max, el, flag, y2) {
@@ -625,6 +628,7 @@ var eb_line = function (dataList, colorList, titleList, unitList, xArray, max, e
 
         ]
     }
+    option.series = option.series.filter((series, index) => Array.isArray(dataList[index]));
     el.setOption(option, true);
 };
 
