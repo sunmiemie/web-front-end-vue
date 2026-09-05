@@ -106,12 +106,13 @@ export default {
     this.loginBtn(getFail());
   },
   beforeDestroy() {
+    this._loginDisposed = true;
     clearTimeout(this.failTimer);
     clearTimeout(this.lockTimer);
   },
   methods: {
     login() {
-      if (this.submitting) return;
+      if (this.submitting || this._loginDisposed) return;
       const locked = getFail();
       this.loginBtn(locked);
       if (locked) return;
@@ -138,7 +139,9 @@ export default {
         data: that.loginData,
       })
         .then((res) => {
+          if (that._loginDisposed) return;
           if (res.data.code === 201) {
+            if (!res.data.data || typeof res.data.data.token !== "string" || !res.data.data.token.trim()) throw new Error("登录响应缺少凭证");
             // 清除另一种存储中的旧身份，避免新登录继续使用旧 token。
             removeToken();
             if (that.loginData.remember) {
@@ -157,7 +160,7 @@ export default {
                 that.loginData.username
               );
             }
-            that.$router.push("/index");
+            return that.$router.push("/index");
           } else {
             if (res.data.data > 10) {
               failLogin(60 * 5 * 1000);
@@ -171,10 +174,12 @@ export default {
           }
         })
         .catch(() => {
+          if (that._loginDisposed) return;
           that.failTxt = '登录请求失败，请检查网络后重试';
           that.fail = true;
         })
         .then(() => {
+          if (that._loginDisposed) return;
           that.submitting = false;
           that.loginBtn(getFail());
         });
