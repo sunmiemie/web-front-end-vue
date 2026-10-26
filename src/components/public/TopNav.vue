@@ -42,9 +42,10 @@
                         id="loginSub"
                         type="button"
                         @click="login()"
+                        :disabled="alarmSubmitting"
                         class="btn btn-dark"
                     >
-                        确认
+                        {{ alarmSubmitting ? "处理中…" : "确认" }}
                     </button>
                 </form>
             </div>
@@ -235,6 +236,9 @@ export default {
             alarmData: [],
             alarmShow: false,
             adminConfirm: false,
+            alarmSubmitting: false,
+            alarmSelectionVersion: 0,
+            alarmDisposed: false,
             minWindow: true,
             loginData: {
                 username: null,
@@ -251,6 +255,7 @@ export default {
         this.receive();
     },
     beforeDestroy() {
+        this.alarmDisposed = true;
         clearInterval(this.clockTimer);
         if (this.ws) {
             this.ws.onmessage = null;
@@ -281,45 +286,51 @@ export default {
             };
         },
         handlerAlarm(dataStationId, dataStationTypeId) {
+            if (this.alarmDisposed) return;
+            this.alarmSelectionVersion += 1;
             this.adminConfirm = true;
             this.hanlderAlarmData.dataStationId = dataStationId;
             this.hanlderAlarmData.dataStationTypeId = dataStationTypeId;
         },
-        login() {
-            this.loginData.username = $("#username").val();
-            this.loginData.password = $("#password").val();
-            const that = this;
-            axios({
-                method: "post",
-                url: base_api + "/login",
-                data: that.loginData,
-            })
-                .then((res) => {
-                    if (res.data.code === 201) {
-                        axios({
-                            method: "get",
-                            url: "/dummy/removeAlarm",
-                            params: that.hanlderAlarmData,
-                        })
-                            .then((res) => {
-                                console.log(res);
-                                if (res.data.data === true) {
-                                    alert("success");
-                                    that.adminConfirm = false;
-                                } else {
-                                    alert("失败");
-                                }
-                            })
-                            .catch((err) => {
-                                // console.log("err", err);
-                            });
-                    } else {
-                        alert("请重新登录");
-                    }
-                })
-                .catch((err) => {
-                    // console.log("err", err);
+        async login() {
+            if (this.alarmSubmitting || this.alarmDisposed || !this.adminConfirm) return;
+            const alarm = { ...this.hanlderAlarmData };
+            const selectionVersion = this.alarmSelectionVersion;
+            const isCurrent = () => !this.alarmDisposed && selectionVersion === this.alarmSelectionVersion;
+            this.loginData = {
+                username: $("#username").val(),
+                password: $("#password").val(),
+            };
+            this.alarmSubmitting = true;
+            try {
+                const loginResponse = await axios({
+                    method: "post",
+                    url: base_api + "/login",
+                    data: this.loginData,
                 });
+                if (this.alarmDisposed) return;
+                if (!loginResponse.data || loginResponse.data.code !== 201) {
+                    if (isCurrent()) alert("请重新登录");
+                    return;
+                }
+                // Complete only the submitted alarm, even if the selection has changed.
+                const response = await axios({
+                    method: "get",
+                    url: "/dummy/removeAlarm",
+                    params: alarm,
+                });
+                if (!isCurrent()) return;
+                if (response.data && response.data.data === true) {
+                    alert("success");
+                    this.adminConfirm = false;
+                } else {
+                    alert("失败");
+                }
+            } catch (_) {
+                if (isCurrent()) alert("请求失败，请重试");
+            } finally {
+                if (!this.alarmDisposed) this.alarmSubmitting = false;
+            }
         },
     },
 };
