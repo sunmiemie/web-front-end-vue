@@ -427,12 +427,32 @@ export default {
         BmlMarkerClusterer,
     },
     props: ["mapHeight", "dShow", "carShow", "carrierShow"],
+    created() {
+        this._mapDisposed = false;
+    },
     async mounted() {
-        this.onlineCarList = (await allOnlineCar()) || [];
-        this.offlineCarList = (await allOfflineCar()) || [];
-        this.factoryAddr = await allFactoryAddr();
-        this.stationAddr = await allStationAddr();
-        this.carrierAddr = await allCarrierAddr();
+        // 各类标记独立加载，单个接口等待或失败不阻塞其他地图数据。
+        const loadList = async (field, request) => {
+            let items = [];
+            try {
+                const result = await request();
+                items = Array.isArray(result) ? result : [];
+            } catch (_) {
+                // 与接口层的失败回退保持一致，仅保留当前类别的空列表。
+            }
+            if (!this._mapDisposed) this[field] = items;
+        };
+        await Promise.all([
+            loadList("onlineCarList", allOnlineCar),
+            loadList("offlineCarList", allOfflineCar),
+            loadList("factoryAddr", allFactoryAddr),
+            loadList("stationAddr", allStationAddr),
+            loadList("carrierAddr", allCarrierAddr),
+        ]);
+    },
+    beforeDestroy() {
+        // 忽略页面关闭后到达的请求结果。
+        this._mapDisposed = true;
     },
     methods: {
         updateCirclePath(e) {
