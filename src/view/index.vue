@@ -88,7 +88,11 @@ export default {
             this.winResize();
         },
     },
+    created() {
+        this._statisticsDisposed = false;
+    },
     beforeDestroy() {
+        this._statisticsDisposed = true;
         window.removeEventListener("resize", this.getHeight);
     },
     async mounted () {
@@ -102,23 +106,33 @@ export default {
             date: "year"
         }
         this.changeHight();
-        this.rData.carCount = await carCount();
-        this.rData.aDay = await statisticalAdd(day);
-        this.rData.aMonth = await statisticalAdd(month);
-        this.rData.aYear = await statisticalAdd(year);
-        this.rData.carAlarm = await statisticalAlarm(day);
-
-        this.lData.sellDay = await statisticalSell(day);
-        this.lData.sellMonth = await statisticalSell(month);
-        this.lData.sellYear = await statisticalSell(year);
-
-        this.lData.pDay = await statisticalManufacture(day);
-        this.lData.pMonth = await statisticalManufacture(month);
-        this.lData.pYear = await statisticalManufacture(year);
-
-        this.lData.tDay = await statisticalTransport(day);
-        this.lData.tMonth = await statisticalTransport(month);
-        this.lData.tYear = await statisticalTransport(year);
+        // 独立统计分别更新，单个请求等待或失败不阻塞其他指标。
+        const loadStatistic = async (request, target, key) => {
+            try {
+                const value = await request();
+                if (!this._statisticsDisposed && value != null) {
+                    target[key] = value;
+                }
+            } catch (error) {
+                // 保留原占位值，避免子组件读取缺失统计的 data 时出错。
+            }
+        };
+        await Promise.all([
+            loadStatistic(carCount, this.rData, "carCount"),
+            loadStatistic(() => statisticalAdd(day), this.rData, "aDay"),
+            loadStatistic(() => statisticalAdd(month), this.rData, "aMonth"),
+            loadStatistic(() => statisticalAdd(year), this.rData, "aYear"),
+            loadStatistic(() => statisticalAlarm(day), this.rData, "carAlarm"),
+            loadStatistic(() => statisticalSell(day), this.lData, "sellDay"),
+            loadStatistic(() => statisticalSell(month), this.lData, "sellMonth"),
+            loadStatistic(() => statisticalSell(year), this.lData, "sellYear"),
+            loadStatistic(() => statisticalManufacture(day), this.lData, "pDay"),
+            loadStatistic(() => statisticalManufacture(month), this.lData, "pMonth"),
+            loadStatistic(() => statisticalManufacture(year), this.lData, "pYear"),
+            loadStatistic(() => statisticalTransport(day), this.lData, "tDay"),
+            loadStatistic(() => statisticalTransport(month), this.lData, "tMonth"),
+            loadStatistic(() => statisticalTransport(year), this.lData, "tYear"),
+        ]);
         
     },
 };
